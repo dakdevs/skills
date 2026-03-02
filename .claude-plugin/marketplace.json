@@ -1,0 +1,21 @@
+{
+  "name": "dakdevs-skills",
+  "owner": {
+    "name": "dakdevs"
+  },
+  "metadata": {
+    "description": "Skills by dakdevs",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "tldraw-canvas",
+      "description": "Interact with open tldraw desktop canvases via a local HTTP API. Create, read, update, and delete shapes. Build diagrams, flowcharts, wireframes, and visual layouts programmatically.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/tldraw-canvas"
+      ]
+    }
+  ]
+}
