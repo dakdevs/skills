@@ -16,6 +16,15 @@
       "skills": [
         "./skills/tldraw-canvas"
       ]
+    },
+    {
+      "name": "pr-this",
+      "description": "Create or update a draft pull request for the current branch using gh CLI. Idempotent - re-assesses the full diff and builds a fresh title and body every time.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/pr-this"
+      ]
     }
   ]
 }
