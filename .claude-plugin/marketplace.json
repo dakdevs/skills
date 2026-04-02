@@ -25,6 +25,15 @@
       "skills": [
         "./skills/pr-this"
       ]
+    },
+    {
+      "name": "best-practice-first",
+      "description": "Research-first development — enforces official docs lookup, codebase pattern analysis, and pitfall identification before any implementation begins.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/best-practice-first"
+      ]
     }
   ]
 }
