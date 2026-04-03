@@ -77,6 +77,7 @@ From the diff, commit history, and user's stated intent, identify:
 
 - **What** changed (files, modules, functions)
 - **Why** it changed (the motivation - from user's answer, commits, branch name, code context)
+- **Who benefits** from this change and how (see "Who this helps" guidance below)
 - **Notable areas** reviewers should look at closely
 
 ### 4. Build the PR title
@@ -110,6 +111,29 @@ when it compresses context better than describing. Use GitHub permalink format:
 ## Why
 
 1-2 sentences on motivation. What problem does this solve or what does it enable?
+
+## Who this helps
+
+Identify the real people who benefit from this change and say specifically how.
+Think honestly about this - don't inflate the impact or reach for vague claims.
+
+**Customer:** Name the actual audience - end users, other engineers on the team,
+ops/SRE, the author's future self, a specific downstream service's consumers, etc.
+Be specific. "Users" is almost never the right answer - say which users and in
+what context. If the change is pure internal cleanup that only helps the next
+person who touches this code, say that honestly.
+
+**Impact:** 1-2 sentences on what concretely gets better for them. Not what the
+code does differently - what the *person* experiences differently. Faster page
+loads they'll notice? Fewer false alerts waking them up? A confusing API they
+no longer have to work around? An error message that now actually tells them
+what went wrong? If the impact is indirect or delayed (e.g., "this unblocks X
+which will eventually let us do Y"), say so - don't pretend the end user feels
+it today if they don't.
+
+If multiple groups benefit, list them separately. If the honest answer is "this
+mostly helps us maintain the codebase" - that's a valid customer and a real win,
+just say it plainly.
 
 ## Diagram
 
