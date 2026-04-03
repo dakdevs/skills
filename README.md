@@ -34,6 +34,14 @@ npx skills add dakdevs/skills -s pr-this
 
 Create or update a draft pull request for the current branch using `gh` CLI. Idempotent — always re-assesses the full diff and either creates a new PR or updates the existing one.
 
+### claude-agent-team-go
+
+```
+npx skills add dakdevs/skills -s claude-agent-team-go
+```
+
+Spin up a team of specialized Claude agents for implementation tasks. Each agent owns a layer of the stack (core, integration, surface, verification) and works from deep internals outward. Invoke with `/claude-agent-team-go` or by saying "team go", "agent team go", etc.
+
 ### tldraw-canvas
 
 ```

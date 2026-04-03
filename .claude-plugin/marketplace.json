@@ -34,6 +34,15 @@
       "skills": [
         "./skills/best-practice-first"
       ]
+    },
+    {
+      "name": "claude-agent-team-go",
+      "description": "Spin up a team of specialized Claude agents for implementation tasks. Each agent owns a layer of the stack and works from deep internals outward.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/claude-agent-team-go"
+      ]
     }
   ]
 }
