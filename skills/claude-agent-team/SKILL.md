@@ -1,9 +1,9 @@
 ---
-name: claude-agent-team-go
-description: Spin up a Claude agent team for implementation tasks. Use when user says "team go", "agent team go", "/claude-agent-team-go", or wants a coordinated multi-agent approach to a feature or task.
+name: claude-agent-team
+description: Spin up a Claude agent team for implementation tasks. Use when user says "team go", "agent team go", "agent team", "/claude-agent-team", or wants a coordinated multi-agent approach to a feature or task.
 ---
 
-# Claude Agent Team Go
+# Claude Agent Team
 
 Spin up a team of specialized agents using TeamCreate and the Task tool. Each agent owns a layer of the stack and works from the deep internals outward toward the surface.
 
