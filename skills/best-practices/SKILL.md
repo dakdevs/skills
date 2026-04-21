@@ -1,9 +1,9 @@
 ---
-name: best-practice-first
-description: "Use when the user wants to ensure a task is done the RIGHT way — researching official docs, best practices, and codebase conventions BEFORE writing any code. Invoke this skill whenever the user says 'best practice', 'do it right', 'make sure this is correct', 'research first', 'what's the proper way', or when tackling unfamiliar libraries, complex integrations, migrations, or any task where getting it wrong would be costly. Also use when the user explicitly invokes /best-practice-first."
+name: best-practices
+description: "Use when the user wants to ensure a task is done the RIGHT way — researching official docs, best practices, and codebase conventions BEFORE writing any code. Invoke this skill whenever the user says 'best practice', 'do it right', 'make sure this is correct', 'research first', 'what's the proper way', or when tackling unfamiliar libraries, complex integrations, migrations, or any task where getting it wrong would be costly. Also use when the user explicitly invokes /best-practices."
 ---
 
-# Best Practice First
+# Best Practices
 
 Research deeply, validate thoroughly, then execute with confidence.
 

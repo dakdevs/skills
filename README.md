@@ -18,13 +18,13 @@ npx skills add dakdevs/skills -s <skill-name>
 
 ## Skills
 
-### best-practice-first
+### best-practices
 
 ```
-npx skills add dakdevs/skills -s best-practice-first
+npx skills add dakdevs/skills -s best-practices
 ```
 
-Research-first development — enforces official docs lookup, codebase pattern analysis, and pitfall identification before any implementation begins. Invoke with `/best-practice-first` or by saying "do it right", "research first", etc.
+Research-first development — enforces official docs lookup, codebase pattern analysis, and pitfall identification before any implementation begins. Invoke with `/best-practices` or by saying "do it right", "research first", etc.
 
 ### pr-this
 
