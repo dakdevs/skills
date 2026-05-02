@@ -57,3 +57,11 @@ npx skills add dakdevs/skills -s twelve-factor
 ```
 
 Tree-based router skill for [The Twelve-Factor App](https://12factor.net/) methodology. Top-level `SKILL.md` triggers on cloud-native / SaaS / containerized-app questions and routes to 12 leaf factor files (codebase, dependencies, config, backing services, build-release-run, processes, port binding, concurrency, disposability, dev/prod parity, logs, admin processes), plus cross-cutting guides for symptom → violation reverse lookup, modern (K8s / Docker / serverless) interpretations, and a walk-the-12 audit checklist for existing apps.
+
+### agentic-docs-architecture
+
+```
+npx skills add dakdevs/skills -s agentic-docs-architecture
+```
+
+Tiered documentation pattern for repos organized for AI-agent effectiveness — `AGENTS.md`/`CLAUDE.md` per crate, `docs/{guides,architecture,features,reference}` tree, change-impact tables, compiler-enforced doc lints. Tells the agent where docs live, what AGENTS.md should contain, when to update the change-impact table, and why trait boundaries are firewalls. Triggers on adding/modifying crates, writing docs, or changing public APIs that have downstream doc impact.
