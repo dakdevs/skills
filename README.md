@@ -49,3 +49,11 @@ npx skills add dakdevs/skills -s tldraw-canvas
 ```
 
 Interact with open [tldraw](https://tldraw.com) desktop canvases via a local HTTP API. Create, read, update, and delete shapes. Build diagrams, flowcharts, wireframes, and visual layouts programmatically.
+
+### twelve-factor
+
+```
+npx skills add dakdevs/skills -s twelve-factor
+```
+
+Tree-based router skill for [The Twelve-Factor App](https://12factor.net/) methodology. Top-level `SKILL.md` triggers on cloud-native / SaaS / containerized-app questions and routes to 12 leaf factor files (codebase, dependencies, config, backing services, build-release-run, processes, port binding, concurrency, disposability, dev/prod parity, logs, admin processes), plus cross-cutting guides for symptom → violation reverse lookup, modern (K8s / Docker / serverless) interpretations, and a walk-the-12 audit checklist for existing apps.
