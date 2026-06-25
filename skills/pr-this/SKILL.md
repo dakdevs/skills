@@ -1,6 +1,6 @@
 ---
 name: pr-this
-description: Create or update a draft pull request for the current branch using `gh` CLI. Triggers on "PR this", "create a PR", "open a PR", "make a PR", "submit PR". Idempotent - always re-assesses the full diff and either creates a new PR or updates the existing one. Creates draft PRs by default; say "do not draft" to create a ready-for-review PR instead.
+description: Create or update a draft pull request for the current branch using `gh` CLI. Triggers on "PR this", "create a PR", "open a PR", "make a PR", "submit PR". Idempotent - always re-assesses the full diff and either creates a new PR or updates the existing one. PR titles are framed around the product issue solved or prevented; PR bodies lead with a tight, evidence-backed "Why" section aimed at engineers. Creates draft PRs by default; say "do not draft" to create a ready-for-review PR instead.
 ---
 
 # PR This
@@ -18,8 +18,8 @@ just run `/pr-this` again whenever the branch changes.
 title or body. Do NOT run `gh pr view --json body` or similar. The old description is
 dead - it reflects a previous state of the branch and will contaminate your output.
 Derive everything exclusively from the current `git diff main...HEAD`. Every section
-(Summary, What, Why, Diagram) must be written from scratch based solely on what the
-diff shows right now.**
+(Why, Summary, What, Who this helps, Diagram) must be written from scratch based
+solely on what the diff shows right now.**
 
 ## Workflow
 
@@ -37,8 +37,6 @@ Before creating/updating the PR, ensure everything is committed.
    ```bash
    git commit -m "$(cat <<'EOF'
    <message>
-
-   Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
    EOF
    )"
    ```
@@ -65,52 +63,169 @@ gh pr list --state merged --limit 5 --json title -q '.[].title'
 
 ### 2. Clarify intent
 
-Before analyzing, use `AskUserQuestion` to ask the user about the motivation
-and goals behind the changes. Ask concisely - e.g., "What's the main goal of
-this PR? Any specific wins or context I should highlight?" Use their answer to
-inform the Summary and Why sections. If the branch name and commits already
-make the intent crystal clear, you may skip this step.
+Before analyzing, use `AskUserQuestion` to gather the evidence needed to write a
+tight, argument-proof **Why** section. Ask concisely and aim for specifics over
+opinions - e.g., "What concrete problem does this address, and what evidence do we
+have it's real (tickets, metrics, incidents, blocked work)?" Use their answer to
+ground every claim in observed facts. If the branch name, commits, and diff already
+make the rationale and evidence crystal clear, you may skip this step.
 
 ### 3. Analyze changes
 
 From the diff, commit history, and user's stated intent, identify:
 
+- **Why** - the observed problem, concrete evidence it is real, and how this change
+  addresses it (write this first)
 - **What** changed (files, modules, functions)
-- **Why** it changed (the motivation - from user's answer, commits, branch name, code context)
 - **Who benefits** from this change and how (see "Who this helps" guidance below)
 - **Notable areas** reviewers should look at closely
 
 ### 4. Build the PR title
 
-Match the repo's existing commit/PR title conventions (e.g., conventional commits `feat:`, `fix:`, or freeform). Keep it under 70 chars.
+**Frame the title as solving or preventing a product issue, not as describing the
+change.** The title is the first thing a reviewer reads and the only thing many
+people will ever read - it should communicate the outcome, not the mechanics.
+
+**Rules:**
+
+- Lead with the product effect: what gets fixed, prevented, unblocked, sped up,
+  or made safer. The reader should know what is better after merge, in user or
+  operator terms.
+- Use an active, outcome verb: `Fix`, `Prevent`, `Stop`, `Restore`, `Unblock`,
+  `Speed up`, `Remove`, `Allow`, `Enable`. Avoid implementation verbs as the
+  primary framing: `Refactor`, `Rewrite`, `Migrate`, `Update`, `Introduce`,
+  `Add support for`.
+- Name the user-visible or operator-visible symptom, not the file or module. A
+  reviewer should be able to picture the broken or improved experience.
+- Match the repo's existing title conventions. If the repo uses conventional
+  commits, choose the prefix that reflects the product framing:
+  - `fix:` - solving an existing product issue
+  - `perf:` - solving a speed or efficiency issue
+  - `feat:` - enabling a new product capability
+  - `chore:` / `refactor:` - preventing a future product issue (only when no
+    user-visible effect exists; the title body must still name the issue
+    being prevented)
+- Under 70 characters. Plain English. No jargon, no internal codenames, no file
+  paths.
+
+**Examples:**
+
+| Bad (implementation framing) | Good (product framing) |
+|---|---|
+| Refactor session middleware to use BetterAuth client | Speed up dashboard loads and prevent silent sign-outs |
+| Add retry logic to Stripe sync worker | Stop nightly Stripe syncs from stalling on rate limits |
+| Migrate auth check to shared helper | Fix blank screen shown after session expiry |
+| Update logger config | Stop dropping error logs during deploys |
+| Introduce caching for user lookups | Cut profile page load time on cold requests |
+| Remove deprecated cookie parser | Prevent future breakage when Node 20 drops the legacy parser |
+
+If the change is genuinely internal with no current or imminent product impact
+(e.g., test infrastructure, doc-only changes), it is acceptable to use a
+descriptive title with the appropriate conventional-commits prefix (`test:`,
+`docs:`, `chore:`). In every other case, the title must name the product issue
+being solved or prevented.
 
 ### 5. Build the PR body
+
+**Write the body top-down.** Draft `## Why` first - everything else supports it.
+The audience is engineers: be tight, specific, and honest. A reviewer should
+finish this section in 15 seconds and know exactly what is wrong and why this
+fixes it.
 
 Use this structure:
 
 ```markdown
+## Why
+
+**Required layout (3 blocks, no more):**
+
+> **<One-line lede.>** State the product problem this solves or prevents in one
+> sentence. Engineer audience - light technical terms are fine, but no file or
+> function names. Cut every word that isn't load-bearing.
+
+**Evidence:**
+- 2-4 single-line bullets. Each must cite something concrete: a metric, a count,
+  a date range, a ticket ID, an incident, a deprecation, a blocked workstream.
+  No adjectives masquerading as evidence.
+
+**Fix:** One sentence on what this PR does about it. Name the mechanism and the
+outcome. If there's a real tradeoff, name it in a short clause.
+
+**Length cap:** ~8 lines rendered. If it's longer, cut. Never collapse the blocks
+into a paragraph. Never drop the labels.
+
+**Tone (diplomatic, hard to argue with):**
+
+- Describe, don't accuse. "Returns 500 on empty input" beats "is broken".
+- Cite, don't assert. A number beats an adjective every time.
+- Measured words: "consistently", "regularly", not "always", "constantly".
+- Concede what's true. If the current approach was reasonable at the time, say so
+  in 3 words. Small concessions make the larger point unassailable.
+- "We", not "you". No urgency theater - skip "critical", "blocker", "must merge"
+  unless the evidence justifies it.
+
+**Argument-proofing check:** Before finalizing, ask:
+
+- Could a reviewer dispute any factual claim? If yes, cite it or cut it.
+- Have I addressed the obvious counterargument ("this can wait", "the workaround
+  is fine", "scope is too big")? If a real objection exists, acknowledge it in one
+  phrase and explain why the fix still holds.
+- Would the author of the original code feel respected reading this?
+
+**Examples:**
+
+Bad (dense paragraph, no evidence, sounds like a TLDR):
+"Dashboard requests currently resolve user sessions through a custom, hand-rolled
+session proxy endpoint that manually fetches and validates raw JSON over the
+network. This duplicates the auth client and was originally added for cookie
+propagation. We replace it with the server-side auth client directly and add a
+5-minute cache."
+
+Good (tight, scannable, evidence-led):
+
+> **Every dashboard load makes an extra network hop for a session check the auth
+> library now handles natively.**
+
+**Evidence:**
+- 40-80ms tail latency on cold dashboard loads, traced to the proxy hop.
+- Duplicates auth-client validation; breaks silently if the session schema drifts.
+- The cookie-propagation bug this worked around (BetterAuth #2434) is fixed in
+  the version we're on.
+
+**Fix:** Replace the custom proxy with the server-side auth client and add a
+5-minute session cookie cache. Behavior is unchanged for signed-in users.
+
+---
+
+Bad (vague, overstated, accusatory):
+"The auth middleware is broken and needs to be refactored urgently."
+
+Good (specific, measured, scannable):
+
+> **Expired sessions show users a blank screen instead of redirecting to
+> sign-in.**
+
+**Evidence:**
+- 14 support tickets in the last 3 weeks reference the blank-screen behavior.
+- Onboarding rollout is paused until the sign-in flow is reliable end-to-end.
+- No regression coverage on the expired-session path for dashboard routes.
+
+**Fix:** Route expired sessions through the existing redirect helper and add a
+regression test so the gap doesn't reopen.
+
 ## Summary
 
-1-3 sentences. Plain English - no jargon, no code references, no file names.
-Analyze the diff and state objectively what this PR achieves. Frame wins in
-terms of concrete outcomes: product improvements, developer experience gains,
-performance or speed improvements, new capabilities unlocked, reliability or
-correctness increases, reduced complexity, etc. This should read like a
-confident release note - what got better and why it matters. If the PR does
-multiple things, cover all of them. Must be a strong, quick-read
-representation that anyone (engineer or not) immediately understands the value of.
-If and only if the scope genuinely can't fit in 3 sentences, switch to bullet
-points - one per win. Keep each bullet to one sentence.
+1-2 sentences. Plain English - no jargon, no code references, no file names.
+State objectively what this PR does and delivers. This section confirms the
+technical scope after the reader already understands the rationale. Don't repeat
+the Why section - assume they read it. Focus on the outcome: what got better,
+faster, safer, or simpler.
 
 ## What
 
 1-3 bullet points. Each should be one sentence max. Link to specific code lines
 when it compresses context better than describing. Use GitHub permalink format:
 `https://github.com/{org}/{repo}/blob/{sha}/{path}#L{start}-L{end}`
-
-## Why
-
-1-2 sentences on motivation. What problem does this solve or what does it enable?
 
 ## Who this helps
 
@@ -148,6 +263,9 @@ non-obvious.
 
 **Tone:** casual, professional, direct. No filler. Write like you're talking to
 a senior engineer over coffee - they don't need hand-holding, just the signal.
+The **Why** section follows the same tone but tighter and more polished: every
+claim is evidence-backed, every word load-bearing. Confident without being
+forceful. Specific without being accusatory.
 
 **HARD REQUIREMENT: NEVER use emdashes anywhere in PR titles, bodies, commit
 messages, or any output. Use regular dashes (-) or rewrite the sentence instead.**

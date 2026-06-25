@@ -1,0 +1,23 @@
+{
+  "skill_name": "source-to-skill-tree",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn this blog post URL into a multi-file skill tree like rust-router. It should credit the author and should not route to unrelated existing skills.",
+      "expected_output": "Creates a self-contained skill tree with SKILL.md, source.md, architecture.md, local routed docs, examples, eval prompts, and source credit.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I have a long PDF manual for an internal operational process. Build a skill tree from it with workflows, troubleshooting, examples, and verification checks.",
+      "expected_output": "Produces a document architecture suited to a PDF/manual source, including source inventory, workflows, troubleshooting docs, examples, and quality gates.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "This skill generated from a book is just a summary. Expand it into a real skill tree with local documents and practical routing.",
+      "expected_output": "Diagnoses thin-summary failure and restructures into principles, practices, workflows, examples, source notes, and evals without copying the book.",
+      "files": []
+    }
+  ]
+}
