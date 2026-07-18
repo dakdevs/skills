@@ -1,0 +1,72 @@
+{
+  "skill_name": "apple-hig-cross-platform-design",
+  "source_accessed": "2026-07-18",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design a document library across responsive Web, a native macOS app, and iPhone. Keep the product coherent without copying one layout everywhere.",
+      "expected_output": "Defines a shared semantic/state model and a platform-delta table; uses URL/history behavior on Web, windows/menu bar/keyboard on macOS, and touch-first stack/tab/sheet behavior on iPhone; includes accessibility, privacy, loading/error, and recovery verification.",
+      "assertions": [
+        "Does not demand pixel-identical interfaces",
+        "Explains each platform difference using input, windowing, display, or session context",
+        "Preserves terminology and action outcomes",
+        "Includes platform-specific verification"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review this iPhone checkout: the Pay button is 32 points high at the top right, validation appears only after submission, Apple Pay permission appears at launch, and swipe is the only way to remove an item.",
+      "expected_output": "Finds touch target/reach, late correction, premature permission, and gesture-only action problems; recommends the smallest corrections with preserved input, visible alternatives, and verification using Dynamic Type, VoiceOver, interruption, and permission-denial states.",
+      "assertions": [
+        "Uses the 44x44 point default target as guidance",
+        "Does not treat 28x28 as the preferred target",
+        "Requests access in context",
+        "Adds a visible alternative to swipe"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Adapt an iPad-style settings screen into a native Mac app. All commands currently live in a bottom toolbar and the window cannot resize.",
+      "expected_output": "Introduces a Mac window and settings structure, moves complete command discovery into the menu bar, keeps frequent contextual actions in an appropriate toolbar, adds shortcuts and resizing/restoration, and tests keyboard/pointer/inactive/multiwindow behavior.",
+      "assertions": [
+        "Does not merely stretch the original screen",
+        "Includes familiar menu structure and standard shortcuts",
+        "Avoids critical bottom-only controls",
+        "Specifies window restoration and resizing"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Make our website look exactly like a current Apple native app using Liquid Glass, native tab bars, and 44-point controls. Call it HIG compliant.",
+      "expected_output": "Rejects the compliance and visual-copy premise, explains that HIG has no standalone Web platform route, preserves Web URL/history/semantic behavior, applies shared hierarchy and accessibility principles, and requires separate WCAG/browser verification.",
+      "assertions": [
+        "States the Web source boundary",
+        "Does not call CSS blur Liquid Glass",
+        "Does not convert native point metrics directly into universal CSS requirements",
+        "Preserves links, browser history, focus, and semantic controls"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "A cross-platform delete action is prominent blue on Web, the default Return action on macOS, and swipe-only on iPhone. Redesign it.",
+      "expected_output": "Creates one destructive semantic command with explicit object/scope, separates it from preferred actions, supplies menu/visible/keyboard/touch routes appropriate to each platform, and chooses undo or confirmation based on reversibility.",
+      "assertions": [
+        "Never gives destructive action the primary/default role",
+        "Provides visible iPhone access beyond swipe",
+        "Includes macOS menu placement",
+        "Verifies consistent consequence and recovery"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Audit a three-platform form at large text, dark appearance, RTL, expired authentication, and offline state.",
+      "expected_output": "Checks reflow, hierarchy, contrast, labels, focus/reading order, RTL direction exceptions, draft preservation, reauthentication resume, offline feedback, platform input paths, and explicit verification evidence.",
+      "assertions": [
+        "Reflows before truncating",
+        "Does not flip logos, digits within numbers, or physical-direction icons",
+        "Preserves entered data through authentication and offline errors",
+        "Separates HIG review from Web standards conformance"
+      ]
+    }
+  ]
+}

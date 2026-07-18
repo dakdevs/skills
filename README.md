@@ -44,6 +44,14 @@ npx skills add dakdevs/skills -s source-to-skill-tree
 
 Transform source material into a reusable skill tree: a routed `SKILL.md`, local reference documents, workflows, examples, eval prompts, and source-credit notes.
 
+### apple-hig-cross-platform-design
+
+```
+npx skills add dakdevs/skills -s apple-hig-cross-platform-design
+```
+
+Apply Apple Human Interface Guidelines across responsive Web, native macOS, and iPhone. Routes design and review work through shared accessibility, privacy, layout, content, and recovery guidance, then adapts navigation, commands, presentation, and input to each platform.
+
 ### claude-agent-team
 
 ```
@@ -51,14 +59,6 @@ npx skills add dakdevs/skills -s claude-agent-team
 ```
 
 Spin up a team of specialized Claude agents for implementation tasks. Each agent owns a layer of the stack (core, integration, surface, verification) and works from deep internals outward. Invoke with `/claude-agent-team` or by saying "team go", "agent team go", etc.
-
-### tldraw-canvas
-
-```
-npx skills add dakdevs/skills -s tldraw-canvas
-```
-
-Interact with open [tldraw](https://tldraw.com) desktop canvases via a local HTTP API. Create, read, update, and delete shapes. Build diagrams, flowcharts, wireframes, and visual layouts programmatically.
 
 ### twelve-factor
 

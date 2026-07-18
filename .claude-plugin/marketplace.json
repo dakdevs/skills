@@ -9,15 +9,6 @@
   },
   "plugins": [
     {
-      "name": "tldraw-canvas",
-      "description": "Interact with open tldraw desktop canvases via a local HTTP API. Create, read, update, and delete shapes. Build diagrams, flowcharts, wireframes, and visual layouts programmatically.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/tldraw-canvas"
-      ]
-    },
-    {
       "name": "pr-this",
       "description": "Create or update a draft pull request for the current branch using gh CLI. Idempotent - re-assesses the full diff and builds a fresh title and body every time.",
       "source": "./",
