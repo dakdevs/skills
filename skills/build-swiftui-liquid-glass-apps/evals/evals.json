@@ -1,0 +1,101 @@
+{
+  "skill_name": "build-swiftui-liquid-glass-apps",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use this sketch and short brief to build a new iPhone and iPad SwiftUI habit tracker with Liquid Glass. I am a designer, not an iOS engineer.",
+      "expected_output": "Inspects the toolchain, translates the brief into a product and state model, chooses an adaptive system shell, implements a small runnable vertical slice, uses custom glass only for functional controls, creates realistic previews, and reports build/runtime/test evidence.",
+      "assertions": [
+        "Does not start with visual effects before defining the product loop",
+        "Includes empty, populated, error, and large-content states",
+        "Uses system navigation and availability-gated Liquid Glass",
+        "Builds and runs or reports an exact blocker"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Turn every card, row, button, and background in my SwiftUI app into clear Liquid Glass. It should look futuristic.",
+      "expected_output": "Challenges the request with material hierarchy evidence, preserves the content layer, proposes system-first navigation and a sparse functional glass plane, and offers a visually expressive alternative without glass-on-content.",
+      "assertions": [
+        "Does not blindly apply glass everywhere",
+        "Explains content versus functional layer",
+        "Uses clear glass only after background and legibility criteria",
+        "Preserves the user's desired futuristic quality through safer means"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Modernize this iOS 17 SwiftUI reading app for Liquid Glass while keeping iOS 17 support.",
+      "expected_output": "Builds a baseline, observes automatic adoption, removes conflicting backgrounds, isolates iOS 26 custom types, provides semantic iOS 17 fallbacks, and verifies both branches.",
+      "assertions": [
+        "Does not silently raise the deployment target",
+        "Removes interference before adding custom effects",
+        "Tests the older runtime branch",
+        "Leaves reading content without Liquid Glass"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Explore four distinct SwiftUI directions for this finance dashboard, then combine the best ideas and make it feel lived in.",
+      "expected_output": "Creates controlled variations with explicit hypotheses, shared product behavior and realistic fixtures, compares by hierarchy and task completion, remixes one direction, removes discarded code, and verifies a state/layout matrix.",
+      "assertions": [
+        "Variations change a named design dimension rather than scope",
+        "Fixtures include dense and long-content data",
+        "Selection is justified by user outcome",
+        "Does not keep four production architectures"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "My custom Liquid Glass playback toolbar stutters while scrolling over video. Diagnose and fix it.",
+      "expected_output": "Reproduces the symptom, reviews glass grouping and invalidation, checks for nested effects and heavy body work, then profiles with SwiftUI/Instruments evidence if code inspection is insufficient and verifies the same scenario after the change.",
+      "assertions": [
+        "Does not guess solely from visual complexity",
+        "Uses GlassEffectContainer and data-flow checks",
+        "Escalates to Instruments for runtime evidence",
+        "Reports before/after evidence"
+      ],
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Build this app using the newest iOS 27 beta APIs, but it must be production-ready next week.",
+      "expected_output": "Discovers installed stable/beta toolchains, identifies the conflict, uses stable APIs by default unless the user explicitly accepts beta risk, separates iOS 26 Liquid Glass baseline from iOS 27 additions, and records availability and release assumptions.",
+      "assertions": [
+        "Does not assume Xcode 27 is stable",
+        "Does not conflate Liquid Glass with iOS 27",
+        "Makes beta authorization and risk explicit",
+        "Provides a stable implementation path"
+      ],
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Review this polished Liquid Glass settings screen for accessibility.",
+      "expected_output": "Checks semantic controls, VoiceOver order/labels/values, Dynamic Type, contrast, Reduce Transparency, Reduce Motion, interaction targets, localization, and varied backgrounds, with evidence and prioritized corrections.",
+      "assertions": [
+        "Does not claim automatic glass adaptation is sufficient",
+        "Tests custom controls as controls",
+        "Includes actual configuration evidence",
+        "Prioritizes blocked use over visual polish"
+      ],
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "The SwiftUI code is done. Make sure the app is actually ready and hand it off.",
+      "expected_output": "Discovers the correct scheme/destination, builds, renders previews, runs the primary and failure paths, runs focused and relevant tests, checks accessibility and Liquid Glass matrices, removes temporary artifacts, and writes an evidence-based handoff.",
+      "assertions": [
+        "Does not equate build success with readiness",
+        "Names tools, destinations, paths, and results",
+        "Reports skipped checks and risks",
+        "Provides a concrete next slice"
+      ],
+      "files": []
+    }
+  ]
+}

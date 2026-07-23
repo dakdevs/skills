@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build SwiftUI Liquid Glass Apps"
+  short_description: "Turn a design brief into a polished SwiftUI app"
+  default_prompt: "Use $build-swiftui-liquid-glass-apps to turn my mobile app concept into a working, accessible SwiftUI app with intentional Liquid Glass."

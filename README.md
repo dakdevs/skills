@@ -52,6 +52,14 @@ npx skills add dakdevs/skills -s apple-hig-cross-platform-design
 
 Apply Apple Human Interface Guidelines across responsive Web, native macOS, and iPhone. Routes design and review work through shared accessibility, privacy, layout, content, and recovery guidance, then adapts navigation, commands, presentation, and input to each platform.
 
+### build-swiftui-liquid-glass-apps
+
+```
+npx skills add dakdevs/skills -s build-swiftui-liquid-glass-apps
+```
+
+Turn a designer's concept, wireframe, screenshot, or product brief into a running native iPhone/iPad app with SwiftUI and intentional Liquid Glass. Includes product modeling, adaptive app architecture, system-first glass guidance, current Xcode/iOS availability strategy, realistic previews, accessibility, performance, build/run/test workflows, source maps, examples, and evals.
+
 ### claude-agent-team
 
 ```
