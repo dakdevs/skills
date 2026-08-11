@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Interface Quality"
+  short_description: "Audit UI consistency and interaction stability"
+  default_prompt: "Use $auditing-interface-quality to audit this frontend source and produce a prioritized remediation plan."

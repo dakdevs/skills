@@ -26,6 +26,14 @@ npx skills add dakdevs/skills -s best-practices
 
 Research-first development — enforces official docs lookup, codebase pattern analysis, and pitfall identification before any implementation begins. Invoke with `/best-practices` or by saying "do it right", "research first", etc.
 
+### auditing-interface-quality
+
+```
+npx skills add dakdevs/skills -s auditing-interface-quality
+```
+
+Audit frontend source for UI consistency, design-system drift, layout and state instability, interaction behavior, motion quality, responsive defects, accessibility patterns, and missing regression protection. Produces evidence-backed, prioritized remediation guidance without modifying the application or making unsupported runtime claims.
+
 ### pr-this
 
 ```
