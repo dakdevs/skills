@@ -42,7 +42,7 @@ npx skills add dakdevs/skills -s pr-this
 
 Create or update a draft pull request for the current branch using `gh` CLI. Idempotent — always re-assesses the full diff and either creates a new PR or updates the existing one.
 
-PR titles are framed around the product issue solved or prevented; PR bodies lead with a tight, evidence-backed "Why" section aimed at engineers and include CallDiff output for TypeScript call-stack changes.
+PR titles are framed around the product issue solved or prevented; PR bodies lead with a tight, evidence-backed "Why" section aimed at engineers.
 
 ### source-to-skill-tree
 
