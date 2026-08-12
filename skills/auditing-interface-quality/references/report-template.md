@@ -1,146 +1,170 @@
 # Audit Report Contract
 
-Use these nine sections in order. Omit empty finding rows, not required sections. Prefer concise synthesis over a long inventory.
-
-For representative audits, state each decisive citation once in the findings table and add detail in its remediation card only when needed to explain reach or causality. Do not restate the full evidence ledger in the verdict, strengths, pattern map, and card. Small scopes normally need no more than three cards; repository-scale representative audits normally need three to five. Additional P0/P1 findings always take precedence over the default size guidance.
+Use these nine sections in order. Keep evidence concise and prioritize causal groups over exhaustive symptom inventories.
 
 ## 1. Executive verdict
 
 State in three to six sentences:
 
-- the overall consistency and interaction-stability posture;
-- the strongest foundations worth preserving;
-- the two or three root causes with the largest user or system impact;
-- whether any P0 or high-confidence P1 finding should block reuse or release.
+- the overall design-quality posture;
+- the overall UI/component-architecture posture;
+- the strongest qualities worth preserving;
+- the two or three highest-leverage causes;
+- whether any high-confidence finding should block release or component reuse.
 
-Do not introduce evidence that is absent from later sections.
+Design quality and architecture must both appear here. Do not lead with accessibility, testing, or motion unless they are genuinely the dominant product issue.
 
 ## 2. Evidence boundaries
 
 Include:
 
 - project and source roots reviewed;
-- representative surfaces and shared layers traced;
-- documentation, configuration, and test areas inspected;
-- exclusions and unavailable evidence;
+- representative pages, workflows, components, and layers traced;
+- design/product documentation, stories, examples, and tests inspected;
+- excluded surfaces and unavailable visual/runtime evidence;
 - explicit statement that no browser/runtime observation occurred;
-- explicit statement that no external library documentation, web source, or external standard informed project findings, or a disclosure if higher-priority instructions required it;
-- search scope for any absence claim.
+- explicit statement that no external source informed findings, or a disclosure if higher-priority instructions required one;
+- search scope for absence claims.
 
-Use this wording distinction consistently:
+Use:
 
 - **Fact:** directly established by source.
-- **Source-inferred risk:** a plausible rendered or interaction outcome requiring the named runtime confirmation.
+- **Source-inferred risk:** a likely final visual or runtime outcome requiring confirmation.
 
-## 3. Inferred interface language
+## 3. Intended design direction and strengths
 
-Describe the project's intended visual and behavioral system before criticizing deviations.
+Describe the audience, primary tasks, information hierarchy, visual character, density, and interaction posture inferred from the project.
 
-| System                  | Source evidence  | Intended or inferred rule            | Status                            |
-| ----------------------- | ---------------- | ------------------------------------ | --------------------------------- |
-| Example: control timing | `path/file:line` | Repeated feedback uses the fast tier | Documented / inferred / exception |
+| Design dimension   | Evidence         | Intended or inferred direction           | Status                            |
+| ------------------ | ---------------- | ---------------------------------------- | --------------------------------- |
+| Example: hierarchy | `path/file:line` | Primary task leads; metadata stays quiet | Documented / inferred / exception |
 
-Call out documented exceptions with their scope. Do not recast an exception as drift unless its implementation exceeds that scope.
+Then list source-backed design and architecture strengths that remediation must preserve. Call out bounded product, brand, marketing, editorial, or platform exceptions.
 
-## 4. Strengths to preserve
+## 4. Design-quality assessment
 
-List only source-backed strengths that should survive remediation. Cite exact `file:line` evidence. Prefer systemic strengths—tokens, primitives, state contracts, stable-slot patterns, motion policy, tests—over aesthetic praise.
+Assess the visible design decisions separately from implementation cleanliness.
 
-## 5. Pattern map
+| Dimension                       | Assessment                           | Evidence                             | Consequence                                    |
+| ------------------------------- | ------------------------------------ | ------------------------------------ | ---------------------------------------------- |
+| Hierarchy and composition       | Strong / mixed / weak / inconclusive | Representative `file:line` citations | Effect on scanning, grouping, or task priority |
+| Typography and content          | ...                                  | ...                                  | ...                                            |
+| Color, surfaces, and emphasis   | ...                                  | ...                                  | ...                                            |
+| Spacing, density, and rhythm    | ...                                  | ...                                  | ...                                            |
+| Interaction feedback and motion | ...                                  | ...                                  | ...                                            |
+| Responsive and inclusive states | ...                                  | ...                                  | ...                                            |
 
-Synthesize evidence before listing findings.
+Use **inconclusive** where source cannot establish the final result. Do not replace assessment with a token inventory.
 
-| Root cause                  | Symptoms grouped under it                     | Blast radius                                              | Primary ownership layer                                                |
-| --------------------------- | --------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Missing or broken invariant | Concrete consequences, not duplicate findings | Isolated / trend / shared-component risk; known consumers | Foundation / primitive / shared component / consumer / regression test |
+## 5. UI and component architecture map
+
+Show where decisions live and whether each layer has a coherent role.
+
+| Layer          | Observed responsibility               | Evidence and consumers | Architecture assessment                          |
+| -------------- | ------------------------------------- | ---------------------- | ------------------------------------------------ |
+| Foundations    | Tokens, theme, type, spacing, motion  | `path/file:line`       | Clear / missing concept / duplicated / overbuilt |
+| Primitives     | Semantics and low-level mechanics     | ...                    | ...                                              |
+| Components     | Reusable product anatomy              | ...                    | ...                                              |
+| Compositions   | Repeated sections/workflows           | ...                    | ...                                              |
+| Features/pages | Domain content, state, task hierarchy | ...                    | ...                                              |
+| Governance     | Docs, stories, tests, review gates    | ...                    | ...                                              |
+
+Explicitly assess boundaries, APIs/variants, state ownership, reuse, consumer overrides, and change impact. A layer may legitimately be absent in a small project.
+
+## 6. Prioritized causal findings
+
+### Severity
+
+- **P0 — Blocking:** A core task is source-proven inoperable, destructive, or irrecoverable, or a shared primitive deterministically exports a severe failure.
+- **P1 — High:** Design hierarchy, comprehension, component reuse, or interaction quality is materially harmed across a primary surface or shared layer.
+- **P2 — Medium:** A bounded design or architecture defect degrades clarity, coherence, resilience, or change cost without blocking the task.
+- **P3 — Low:** Limited polish or prevention work.
+
+### Confidence
+
+- **High:** The design mismatch or architecture cause follows directly from source and representative consumers were traced.
+- **Medium:** The cause is evidenced, but visible impact or reach depends on rendering, content, environment, or uninspected consumers.
+- **Low:** Evidence is incomplete. Put it in evidence gaps unless potential impact is exceptional.
+
+### Pattern map
+
+| ID    | Severity | Confidence | Design problem           | Architecture cause                | Blast radius                             | Evidence                       | Primary owner | Runtime confirmation        |
+| ----- | -------- | ---------- | ------------------------ | --------------------------------- | ---------------------------------------- | ------------------------------ | ------------- | --------------------------- |
+| IQ-01 | P1       | High       | User-facing quality loss | Misplaced/missing system decision | Isolated / trend / shared-component risk | `path/file:line` and consumers | One layer     | Exact check or not required |
 
 Rules:
 
+- Group symptoms that share a cause and owner.
+- Separate causes when target ownership differs.
 - Use **trend** only for two independent occurrences.
-- Use **shared-component risk** for one implementation with multiple known consumers.
-- Use **isolated** for one occurrence without demonstrated shared reach.
-- Split entries when remediation ownership differs, even if symptoms look similar.
-
-## 6. Prioritized findings
-
-### Severity predicates
-
-- **P0 — Blocking:** Source proves a core task is inoperable for an input/user group, state can trigger destructive or irrecoverable behavior, or a shared primitive deterministically exports a severe interaction failure. Do not assign P0 for polish or unmeasured discomfort.
-- **P1 — High:** A shared or repeated defect materially harms continuity, accessibility, responsive reachability, or interaction predictability, but a viable path remains.
-- **P2 — Medium:** A localized inconsistency or risk degrades clarity, efficiency, resilience, or maintainability without blocking the task.
-- **P3 — Low:** Bounded polish or prevention work with limited immediate user impact.
-
-### Confidence predicates
-
-- **High:** The behavior or policy mismatch follows deterministically from source, and the relevant abstraction/consumer trace is complete.
-- **Medium:** The causal mechanism is evidenced, but visible impact depends on rendering, content, environment, or an uninspected abstraction.
-- **Low:** Evidence is incomplete or mainly speculative. Put this in verification gaps rather than prioritized remediation unless potential impact is exceptional.
-
-### Findings table
-
-| ID    | Severity | Confidence | Evidence type | Root cause               | User/system impact                  | Evidence                                           | Ownership         | Runtime confirmation         |
-| ----- | -------- | ---------- | ------------- | ------------------------ | ----------------------------------- | -------------------------------------------------- | ----------------- | ---------------------------- |
-| IQ-01 | P1       | High       | Fact          | Concise causal statement | Specific affected task or invariant | `path/file:line`; representative consumer evidence | One primary layer | Not required, or exact check |
-
-Every row must map to one pattern-map root cause and one remediation card. Do not create separate rows for symptoms with the same cause and owner.
+- Do not make tests, tokens, or abstraction the design problem; state the user-facing consequence first.
 
 ## 7. Remediation cards
 
-Create one card per finding using this exact field order.
+Create one card per finding in this field order.
 
 ### IQ-01 — Outcome-oriented title
 
-**Target outcome:** State the user-observable invariant to restore.
+**Target design outcome:** Describe the intended hierarchy, clarity, coherence, character, density, or feedback.
 
-**Root cause:** Name the missing or broken system contract, not the visible symptom.
+**Target architecture:** Describe the desired layer ownership, boundary, API, composition, or governance shape.
 
-**Evidence and reach:** Cite every decisive `file:line`, identify independent occurrences or shared consumers, and label facts versus source-inferred risks.
+**Root cause:** Connect the current architectural decision to the design consequence.
 
-**Why it matters:** Connect the cause to a specific task, user group, consistency rule, or regression surface. Keep severity separate from confidence.
+**Evidence and reach:** Cite decisive `file:line` evidence, representative consumers, occurrence type, and fact/inference labels.
 
-**Primary ownership layer:** Choose exactly one: foundation/token, primitive, shared component, feature consumer, or regression test.
+**Why it matters:** Tie the issue to a primary task, design quality, component reuse, or cost of change.
 
-**Affected files and consumers:** Name likely implementation targets and known downstream surfaces. Mark unverified consumers as search targets, not facts.
+**Primary ownership layer:** Choose one: foundation, primitive, component, composition, feature/page, or governance.
+
+**Affected files and consumers:** Name implementation targets and known consumers. Mark unverified consumers as search targets.
 
 **Apply in this order:**
 
-1. Start at the owning layer.
-2. Migrate or adapt consumers only as required.
-3. Preserve documented exceptions and public behavior.
-4. Add protection for the restored invariant.
+1. Establish or preserve the intended design decision.
+2. Move enforcement to the correct owner.
+3. Define the target API, composition, state, or token contract.
+4. Migrate representative consumers and remove parallel decisions.
+5. Add focused governance for the restored quality.
 
-Use concrete project-compatible steps. Do not prescribe a framework rewrite unless the current stack cannot express the invariant and the evidence proves that limitation.
+Use project-compatible steps. Do not prescribe a framework rewrite or universal component without evidence.
 
-**Implementation risks:** Name likely regressions, migration hazards, state/focus changes, responsive tradeoffs, or abstraction overreach.
+**Migration and design risks:** Name likely visual regressions, API breakage, consumer drift, over-abstraction, content problems, focus/state changes, or exception loss.
 
-**Verification:** Specify scenario, input/environment, observation, and expected result. Separate source/unit/component/E2E/manual checks when useful.
+**Verification:** Specify realistic content, pages, states, viewports, interactions, architecture/source checks, and expected result.
 
-**Done when:** Give one or more observable pass/fail predicates. “Looks consistent,” “tested,” or “uses tokens” is insufficient.
+**Done when:** Give observable design and structural predicates. “Looks better,” “uses components,” or “uses tokens” is insufficient.
 
-## 8. Phased roadmap
+## 8. Target architecture and roadmap
 
-Order work by dependency and blast radius, not by file order.
+Describe the target system before listing phases. A compact target map is preferred:
 
-1. **Foundation:** reconcile tokens, policies, ownership, and intentional exceptions.
-2. **Primitives:** restore semantics, state contracts, geometry, measurement, and motion behavior.
-3. **Shared components and consumers:** migrate affected compositions; avoid parallel local fixes.
-4. **Regression protection:** add component, E2E, accessibility, geometry, or visual checks for the actual invariants.
+```text
+foundations → primitives → components → compositions → pages
+                         ↘ governance protects each material contract
+```
 
-For each phase, list finding IDs, dependencies, safe parallel work, and the reason for the order. Delete phases that truly do not apply, but explain why.
+Then order work by design leverage and dependency:
+
+1. clarify design intent and semantic foundations;
+2. correct primitive/component boundaries and APIs;
+3. establish shared compositions and migrate pages;
+4. align state, responsive behavior, motion, and accessibility;
+5. protect the quality bar with stories, tests, and review gates.
+
+Delete irrelevant phases and explain why. Identify safe parallel work and migration sequence.
 
 ## 9. Verification plan and evidence gaps
 
-Use a matrix that turns uncertainty into follow-up work.
-
-| Invariant               | Scenario/input                      | Check type               | Pass condition                                                         | Covers findings |
-| ----------------------- | ----------------------------------- | ------------------------ | ---------------------------------------------------------------------- | --------------- |
-| Stable replacement slot | Rapid switching with unequal panels | Component + rendered E2E | No two normal-flow panels; downstream geometry follows declared policy | IQ-02           |
+| Quality or architecture invariant | Representative scenario                         | Check type                      | Pass condition                                                | Findings |
+| --------------------------------- | ----------------------------------------------- | ------------------------------- | ------------------------------------------------------------- | -------- |
+| Primary hierarchy is consistent   | Realistic page with long content and all states | Source + rendered design review | Reading/action order remains clear; semantic roles are reused | IQ-01    |
 
 End with:
 
-- source-inferred risks still requiring runtime confirmation;
-- surfaces not reviewed;
-- limits on accessibility, contrast, performance, and cross-browser conclusions;
-- existing commands the implementing team should run after remediation, if evidenced in project configuration.
+- visual/runtime questions that source cannot answer;
+- unreviewed pages, consumers, themes, states, or platforms;
+- limits on accessibility, contrast, performance, and cross-browser claims;
+- evidenced project commands the implementing team should run after remediation.
 
-Do not imply that executing those checks was part of the source-only audit.
+Do not imply those runtime checks were executed during the source-only audit.

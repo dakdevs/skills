@@ -32,7 +32,7 @@ Research-first development — enforces official docs lookup, codebase pattern a
 npx skills add dakdevs/skills -s auditing-interface-quality
 ```
 
-Audit frontend source for UI consistency, design-system drift, layout and state instability, interaction behavior, motion quality, responsive defects, accessibility patterns, and missing regression protection. Produces evidence-backed, prioritized remediation guidance without modifying the application or making unsupported runtime claims.
+Audit frontend source for design quality and UI/component architecture: visual hierarchy, composition, typography, color, spacing, density, design-system coherence, component boundaries, APIs, variants, state ownership, reuse, responsive behavior, interaction quality, and governance. Produces evidence-backed remediation guidance without modifying the application or making unsupported runtime claims.
 
 ### pr-this
 

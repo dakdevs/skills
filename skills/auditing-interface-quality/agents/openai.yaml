@@ -1,4 +1,4 @@
 interface:
   display_name: "Audit Interface Quality"
-  short_description: "Audit UI consistency and interaction stability"
-  default_prompt: "Use $auditing-interface-quality to audit this frontend source and produce a prioritized remediation plan."
+  short_description: "Audit design quality and component architecture"
+  default_prompt: "Use $auditing-interface-quality to audit this frontend's design quality and UI/component architecture and produce a prioritized remediation plan."

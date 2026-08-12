@@ -1,324 +1,342 @@
-# Audit Rubric
+# Design Quality and UI Architecture Rubric
 
-Use this rubric to collect evidence, not to force findings. A category may be healthy or inconclusive.
+Use this rubric to understand the interface as a designed product and as a component system. Do not force findings where evidence is healthy or inconclusive.
 
 ## Contents
 
-1. [Visual-system consistency](#1-visual-system-consistency)
-2. [Layout and geometry stability](#2-layout-and-geometry-stability)
-3. [State and content continuity](#3-state-and-content-continuity)
-4. [Interaction and input behavior](#4-interaction-and-input-behavior)
-5. [Motion behavior](#5-motion-behavior)
-6. [Responsive layout and overflow](#6-responsive-layout-and-overflow)
-7. [Accessibility and focus](#7-accessibility-and-focus)
-8. [Rendering, measurement, and first paint](#8-rendering-measurement-and-first-paint)
-9. [UI regression protection](#9-ui-regression-protection)
+1. [Product intent and visual direction](#1-product-intent-and-visual-direction)
+2. [Hierarchy, composition, and content clarity](#2-hierarchy-composition-and-content-clarity)
+3. [Typography, color, spacing, density, and surfaces](#3-typography-color-spacing-density-and-surfaces)
+4. [Design-system coherence and token architecture](#4-design-system-coherence-and-token-architecture)
+5. [Component boundaries and layer ownership](#5-component-boundaries-and-layer-ownership)
+6. [Component APIs, variants, slots, and composition](#6-component-apis-variants-slots-and-composition)
+7. [State, behavior, and data ownership](#7-state-behavior-and-data-ownership)
+8. [Responsive layout, interaction, motion, and stability](#8-responsive-layout-interaction-motion-and-stability)
+9. [Semantics, accessibility, and inclusive states](#9-semantics-accessibility-and-inclusive-states)
+10. [Documentation, stories, tests, and governance](#10-documentation-stories-tests-and-governance)
 
 ## Evidence vocabulary
 
-- **Fact:** Directly demonstrated by declarations, control flow, markup, configuration, or tests.
-- **Source-inferred risk:** A credible runtime outcome whose final effect depends on rendering, content, environment, or user input.
+- **Fact:** Directly demonstrated by source, documentation, configuration, stories, or tests.
+- **Source-inferred risk:** A likely visual or runtime outcome whose final effect depends on rendering, content, environment, or user input.
+- **Design consequence:** The effect on hierarchy, comprehension, coherence, character, density, affordance, or feedback.
+- **Architecture cause:** The boundary, ownership, API, reuse, state, or governance decision that creates or permits the consequence.
 - **Intentional exception:** A documented deviation with bounded scope and a reason.
-- **Trend:** Two independent occurrences or one shared implementation with multiple known consumers.
-- **Ownership layer:** Foundation/token, primitive, shared component, feature consumer, or regression test.
+- **Trend:** Two independent occurrences. A shared implementation with several consumers is a shared-component risk.
 
-## 1. Visual-system consistency
-
-### Inventory
-
-- Color, typography, spacing, size, radius, border, elevation, opacity, layer, and motion tokens.
-- Shared variants, state recipes, icons, control densities, and content hierarchy.
-- Where raw values coexist with tokens and where one-off variants enter the system.
-
-### Reliable source signals
-
-- Repeated near-match literals beside an established semantic token.
-- A shared component exposing inconsistent defaults or consumers overriding its invariant styles.
-- State styles that change typography, borders, or spacing differently across equivalent controls.
-- Documentation, tokens, and shipped primitives describing different vocabularies.
-
-### Common false positives
-
-- Data visualization colors, mathematical geometry, media aspect ratios, and browser-normalization values.
-- A documented brand or marketing surface intentionally using a different hierarchy.
-- One literal inside the token definition itself.
-- A value that has no semantic reuse and does not create a user-facing inconsistency.
-
-### Evidence standard
-
-Cite the intended token or convention, the divergent source line, and a second occurrence or shared-consumer path before calling drift systemic. Describe the user-visible state affected; “magic number” alone is not a UI finding.
-
-### Likely ownership
-
-Foundation/token when the concept is missing; primitive when a shared default is wrong; consumer when a supported variant is misused.
-
-### Runtime confirmation
-
-Required for computed color contrast, font fallback, platform default appearance, optical alignment, and theme-specific final rendering.
-
-## 2. Layout and geometry stability
+## 1. Product intent and visual direction
 
 ### Inventory
 
-- Dimensions and alignment across rest, hover, focus, selected, loading, validation, and expanded states.
-- Replacement panels, accordions, disclosures, list mutations, image/media loading, overlays, and feedback banners.
-- Normal-flow participation of entering and exiting elements.
+- Audience, core tasks, information priority, product tone, brand expression, and platform posture.
+- Design principles, reference surfaces, explicit exceptions, and the distinction between application, editorial, marketing, and utility UI.
+- Which pages or workflows best express the intended quality bar.
 
-### Reliable source signals
+### Reliable signals
 
-- State changes alter font metrics, border thickness, padding, intrinsic labels, or icon slots without reserved space.
-- Entering and exiting replacement content can coexist in normal flow.
-- Feedback or validation content is inserted above/between stable content without a reserved or overlay strategy.
-- Unknown media dimensions or late layout measurements determine published geometry.
+- Documentation names a visual or interaction direction that representative pages do not carry.
+- Primary tasks and secondary information receive indistinguishable emphasis.
+- Brand expression appears only in isolated decoration while the core product uses generic defaults.
+- Different product areas imply incompatible density, tone, or interaction models without a documented boundary.
 
-### Common false positives
+### False positives
 
-- Deliberate content-driven growth in a document flow where downstream movement is expected.
-- A transform animation that changes pixels but not layout geometry.
-- Explicitly reserved skeleton or aspect-ratio space.
-- A container-height change intentionally communicating expanded content.
+- Marketing, onboarding, dense operational tools, and long-form content intentionally use different modes.
+- Platform-specific adaptations preserve product intent through different native patterns.
+- Minimal visual treatment may be intentional when content and task priority remain clear.
+- A design can be quiet without being generic.
 
-### Evidence standard
+### Evidence and ownership
 
-Trace the state transition and name the geometry property or flow relationship that can change. Cite both state branches when possible. Label the visible magnitude as source-inferred unless measured.
-
-### Likely ownership
-
-Primitive for reusable state geometry; shared component for replacement slots and feedback regions; consumer for content-specific reservation.
+Cite intent documentation plus representative page/composition source. When documentation is absent, infer cautiously from recurring page-level decisions and label that inference. Ownership usually belongs to product design direction, a composition system, or a feature—not automatically to tokens.
 
 ### Runtime confirmation
 
-Required for bounding-box movement, cumulative layout shift, font-metric effects, scroll anchoring, and content-dependent height transitions.
+Required for final visual character, imagery, perceived density, optical balance, and whether the rendered product feels distinctive or generic.
 
-## 3. State and content continuity
+## 2. Hierarchy, composition, and content clarity
 
 ### Inventory
 
-- Controlled and uncontrolled state, keys, mount/unmount boundaries, route transitions, filters, tabs, pagination, form progress, and async state.
-- Focus, selection, scroll, input value, expanded state, and pending/success/error identity.
+- Page landmarks, headings, sections, primary/secondary actions, navigation, summaries, details, empty/loading/error states, and progressive disclosure.
+- Grouping, alignment, reading order, whitespace, emphasis, and repeated page compositions.
+- Labels, instructions, status copy, error recovery, and information scent.
 
-### Reliable source signals
+### Reliable signals
 
-- Keys derived from position or mutable display text.
-- Conditional branches replace a control or subtree when only presentation changes.
-- Local state initializes from a prop but cannot follow later controlled updates.
-- A pending transition clears useful content, resets focus, or allows stale completion to overwrite current state.
-- Loading, empty, and error branches change the surface's identity or control placement unnecessarily.
+- Heading levels, type roles, surface emphasis, or action prominence do not match task priority.
+- Every section uses the same card/container treatment, flattening relationships and creating “card soup.”
+- Layout components encode arbitrary visual gaps rather than semantic relationships.
+- Content is duplicated, over-labeled, hidden behind vague affordances, or ordered by implementation rather than user task.
+- Repeated page sections solve the same composition differently.
 
-### Common false positives
+### False positives
 
-- Intentional reset after account, tenant, or security boundary changes.
-- A keyed remount explicitly used to reset a completed workflow.
-- Server-rendered state that is intentionally authoritative on navigation.
-- Removing hidden content to prevent stale or sensitive information exposure.
+- Similar visual weight is intentional for peer choices.
+- Dense expert workflows prioritize scan efficiency over generous spacing.
+- A flat surface hierarchy can reduce unnecessary chrome when grouping remains clear.
+- Domain content may require repetition for safety or comparison.
 
-### Evidence standard
+### Evidence and ownership
 
-Describe the state machine: trigger, prior state, transition, next state, and identity that may be lost. Cite state ownership and conditional/keyed rendering lines.
-
-### Likely ownership
-
-Primitive for controlled/uncontrolled contracts; shared component for transition identity; feature consumer for domain reset rules.
+Cite representative page structure, heading/type roles, layout classes, action variants, and repeated compositions. Name the user task that loses clarity. Ownership usually belongs to compositions or pages; promote a pattern only when several pages share meaning and change cadence.
 
 ### Runtime confirmation
 
-Required for race ordering, focus/scroll loss, hydration timing, rapid interruption, and browser restoration behavior.
+Required for visual scanning order, fold composition, optical grouping, text wrapping, localized content, and perceived action prominence.
 
-## 4. Interaction and input behavior
+## 3. Typography, color, spacing, density, and surfaces
 
 ### Inventory
 
-- Native element choice, pointer and keyboard activation, touch targets, drag thresholds, dismissal, disabled/pending behavior, repeated input, and feedback location.
-- Menus, dialogs, tabs, comboboxes, disclosures, sliders, switches, and custom gestures.
+- Type families, roles, scale, weight, line height, measure, numeric treatment, and code/data typography.
+- Semantic color roles, contrast intent, surfaces, borders, elevation, overlays, and dark/high-contrast themes.
+- Spacing rhythm, control sizing, density modes, radius, icon sizing, alignment, and interactive states.
 
-### Reliable source signals
+### Reliable signals
 
-- Clickable non-native elements without an equivalent keyboard contract.
-- ARIA roles applied without the required composite-widget behavior.
-- Pointer-only hover or gesture as the sole discovery/activation path.
-- Duplicate submissions, racing timers, stale async responses, or optimistic state without rollback.
-- Feedback appears far from its originating control or changes unrelated layout.
+- Near-identical type roles or spacing values create no meaningful hierarchy.
+- Important content uses microcopy roles, while incidental metadata competes with primary information.
+- Color, border, shadow, and radius are layered simultaneously without a clear surface model.
+- Equivalent controls have different heights, internal rhythm, icon placement, or state treatment.
+- Raw values repeatedly bypass a coherent semantic foundation.
+- Density varies accidentally between adjacent product surfaces.
 
-### Common false positives
+### False positives
 
-- A semantic primitive library supplies behavior not visible in the consumer file.
-- Decorative elements intentionally ignore input.
-- A compact visual glyph has a larger pseudo-element or wrapper hit target.
-- Hover is supplementary and the action remains visible and keyboard accessible.
+- Data visualization, mathematical geometry, media ratios, and platform-normalization values may be literal.
+- Optical corrections and icon-specific offsets need not become shared tokens.
+- Compact chrome can surround readable content without making the entire product too dense.
+- Different semantic roles may resolve to the same current value while preserving future theming intent.
 
-### Evidence standard
+### Evidence and ownership
 
-Follow abstractions before declaring behavior missing. Cite the interactive element, handler/state contract, and shared primitive implementation when relevant.
-
-### Likely ownership
-
-Primitive for semantic/input contracts; shared component for product feedback; feature consumer for domain actions and error recovery.
+Cite the foundation definition, representative usage, and the visible relationship affected. A raw value is not a finding by itself. Foundation owns recurring semantic concepts; components own bounded anatomy; compositions own content rhythm.
 
 ### Runtime confirmation
 
-Required for event ordering, pointer capture, touch behavior, screen-reader interaction modes, and third-party primitive output.
+Required for computed contrast, font fallback, optical alignment, perceived density, theme balance, and target size.
 
-## 5. Motion behavior
+## 4. Design-system coherence and token architecture
 
 ### Inventory
 
-- Duration/easing/spring vocabulary, entrance/exit hierarchy, replacement transitions, shared-layout identity, interruption, reduced motion, and CSS versus JavaScript animation paths.
+- Primitive versus semantic tokens, aliases, themes, component recipes, variants, state tokens, and documented exceptions.
+- How CSS, JavaScript, SVG, charts, and motion consume shared decisions.
+- Where consumers override component styling or reconstruct recipes.
 
-### Reliable source signals
+### Reliable signals
 
-- Repeated controls use divergent timings or unbounded `transition: all`.
-- Exits are slower than entries without an intentional reason.
-- Layout properties animate when transform/opacity or a stable slot can express the change.
-- CSS and imperative animation bypass the project's reduced-motion policy.
-- Animation replays on every mount despite documentation limiting it to a first visit or milestone.
+- Tokens mirror raw scales but do not encode product meaning.
+- Components expose tokens or variants that overlap, conflict, or have unclear intended use.
+- Consumers reach through component boundaries with selectors, arbitrary values, or internal part knowledge.
+- One concept has separate uncoordinated representations across CSS and component code.
+- Token additions are driven by individual screenshots rather than recurring semantic needs.
+- Documentation and shipped recipes describe different systems.
 
-### Common false positives
+### False positives
 
-- A bounded, documented marketing entrance differs from repeated application feedback.
-- Physics parameters differ because distance, mass, or interaction type differs.
-- A layout animation is deliberate and tested for interruption.
-- Zero-duration is not always the best reduced-motion response; useful opacity feedback may remain.
+- Not every value deserves a token; premature semantic naming creates noise.
+- A one-off feature value may correctly remain local.
+- Exposing constrained style hooks can be intentional for a platform component.
+- A small product may need a compact foundation rather than a large formal system.
 
-### Evidence standard
+### Evidence and ownership
 
-Cite the project motion policy, animation declaration, trigger frequency, and affected property. Separate consistency concerns from performance or vestibular risks.
-
-### Likely ownership
-
-Foundation for timing and reduced-motion policy; primitive for interruption and lifecycle behavior; consumer for one-time choreography.
+Trace a decision from foundation to primitive/component to page. Cite overrides and consumers. Judge whether the system encodes intent, not merely whether variables exist. Ownership belongs to foundations only for concepts that recur across layers.
 
 ### Runtime confirmation
 
-Required for perceived pacing, frame rate, interruption quality, actual travel distance, and reduced-motion computed behavior.
+Required for resolved theme values and final style precedence. Architecture conclusions about duplication, naming, and override paths can be source facts.
 
-## 6. Responsive layout and overflow
+## 5. Component boundaries and layer ownership
 
 ### Inventory
 
-- Breakpoint strategy, intrinsic sizing, wrapping, truncation, min/max constraints, nested scroll regions, viewport units, safe areas, zoom, localization, and popup collision.
+- Foundations, primitives, reusable components, compositions, feature/page components, and governance assets.
+- Import direction, domain dependencies, styling ownership, behavior ownership, and repeated compositions.
+- Components that mix fetching, domain policy, layout, visual anatomy, and low-level interaction.
 
-### Reliable source signals
+### Reliable signals
 
-- Fixed widths/heights without a smaller-screen or content-overflow path.
-- Flex/grid children missing minimum-size escape hatches when content must shrink.
-- Viewport-fixed shells create nested scrollers on mobile.
-- Overlays lack maximum block size, internal scrolling, or edge handling.
-- Long labels and dynamic values have no wrapping, truncation, or expansion policy.
+- A primitive imports feature/domain concepts or contains product copy.
+- Pages rebuild the same semantic component anatomy and behavior independently.
+- A generic component owns unrelated layout, data, routing, and business behavior.
+- Consumers depend on internal DOM structure or style implementation.
+- Shared components accept page-specific escape hatches because their boundary is too broad.
+- Design decisions live at a layer that cannot enforce them across relevant consumers.
 
-### Common false positives
+### False positives
 
-- A fixed dimension belongs to a bounded icon, avatar, or intentional media frame.
-- An ancestor primitive supplies collision handling or a portal.
-- Horizontal scrolling is the intended interaction for a code/table surface and is signposted.
-- Desktop-only internal scrolling switches to document flow at smaller breakpoints.
+- Colocation is not poor architecture when responsibility remains bounded.
+- Large components can be coherent when they own one complex interaction.
+- Duplication is preferable when two surfaces share appearance but not semantics or change cadence.
+- Feature-specific components do not belong in a universal design system merely because they repeat twice.
 
-### Evidence standard
+### Evidence and ownership
 
-Cite the constraint and the absence or presence of a responsive escape path. Phrase clipping and overflow as risks unless the source deterministically clips known content.
-
-### Likely ownership
-
-Foundation for breakpoints and layers; primitive for overlay containment; layout component for scroll architecture; consumer for content policies.
+Map import/consumer relationships and describe the responsibility in one sentence. Identify the decision that crosses a boundary and the change that would require editing unrelated consumers. Choose the narrowest layer capable of enforcing the invariant.
 
 ### Runtime confirmation
 
-Required at narrow widths, large text/zoom, localization extremes, dynamic viewport changes, safe areas, and overlay edges.
+Usually unnecessary for ownership and dependency findings. Runtime checks are needed when the architectural issue is inferred from rendered composition or behavior.
 
-## 7. Accessibility and focus
+## 6. Component APIs, variants, slots, and composition
 
 ### Inventory
 
-- Accessible names, roles, values/states, landmark labels, current-page state, focus order/visibility, focus trap/return, error/status announcements, contrast tokens, and reduced motion.
+- Props, variants, slots, children, compound components, render hooks, polymorphism, defaults, and controlled/uncontrolled contracts.
+- Boolean combinations, mutually exclusive states, public style overrides, internal part exposure, and variant usage across consumers.
+- Whether APIs describe product semantics or implementation details.
 
-### Reliable source signals
+### Reliable signals
 
-- Native semantics replaced by roles without native behavior.
-- Visible labels are not programmatically associated.
-- State is conveyed only through color, position, or icon changes.
-- Focus outline is removed without a visible replacement.
-- Conditional unmount can remove the focused element without a handoff.
-- Async feedback has no status/error communication.
+- Boolean props create invalid or ambiguous combinations.
+- Variants encode page names or one consumer's layout rather than reusable meaning.
+- Callers must coordinate several props to express one semantic mode.
+- Component defaults are weak, so every consumer repeats configuration or overrides anatomy.
+- Slots are either too closed for legitimate composition or so open that the component enforces no design.
+- A “universal” component contains conditional branches for unrelated product concepts.
 
-### Common false positives
+### False positives
 
-- A higher-level component injects names, descriptions, or focus management.
-- Visually hidden text supplies a valid name.
-- Browser-native focus is intentionally retained.
-- Automated semantics from a well-defined primitive need verification before being called absent.
+- A small number of independent booleans may accurately model orthogonal behavior.
+- Explicit props can be clearer than a clever compound API.
+- Polymorphism is unnecessary when semantics should remain fixed.
+- Local duplication may be safer than a premature abstract variant.
 
-### Evidence standard
+### Evidence and ownership
 
-Trace label and state relationships across component boundaries. Cite both the missing/incorrect declaration and any existing primitive contract. Avoid claiming standard compliance from static source.
-
-### Likely ownership
-
-Primitive for semantics/focus mechanics; shared component for naming defaults and status regions; consumer for domain labels and error copy.
+Cite the public API and at least representative consumers. Build a combination or change-impact matrix when prop interactions are material. Ownership belongs to the component API; domain modes may require distinct compositions rather than more variants.
 
 ### Runtime confirmation
 
-Required for accessibility-tree output, focus visibility, reading/interaction order, announcements, contrast, and assistive-technology behavior.
+Usually unnecessary for API-shape findings. Confirm behavior when prop combinations affect focus, layout, or lifecycle.
 
-## 8. Rendering, measurement, and first paint
+## 7. State, behavior, and data ownership
 
 ### Inventory
 
-- Server/client state boundaries, hydration-sensitive values, layout effects, observers, fonts, images, portals, initial animation, theme initialization, and measurement fallbacks.
+- Controlled/uncontrolled state, domain state, transient UI state, server/client boundaries, async feedback, measurement, keys, and context/providers.
+- Which layer owns selection, disclosure, validation, navigation, loading, and optimistic state.
+- State synchronization between primitives, components, compositions, and routes.
 
-### Reliable source signals
+### Reliable signals
 
-- Client-only preference changes first-paint markup or geometry after hydration.
-- Geometry is published before a valid measurement exists.
-- Measurement updates only on window resize while content can change independently.
-- Initial animations move default content on every load.
-- Font/media space is unresolved until late load.
+- A presentational primitive owns domain workflow or data fetching.
+- Pages manually coordinate state that a semantic shared component should own.
+- Props are mirrored into local state without a clear authority model.
+- Context provides unrelated high-frequency state to broad subtrees.
+- Keys or conditional branches destroy identity for presentation-only changes.
+- Async results, timers, or optimistic state can race or publish stale feedback.
 
-### Common false positives
+### False positives
 
-- A server-safe inline initializer establishes theme before paint.
-- CSS aspect ratio or explicit dimensions reserve media space.
-- The observer or measurement exists in an imported helper.
-- A client-only decorative effect does not influence layout or essential content.
+- Feature state correctly remains near domain rules even if several controls consume it.
+- A keyed remount may intentionally reset a completed or security-sensitive workflow.
+- Local transient state is often preferable to central storage.
+- Server ownership can intentionally reset client UI on navigation.
 
-### Evidence standard
+### Evidence and ownership
 
-Trace the first render, initialization, measurement, and update sequence. Cite the fallback geometry and every trigger that refreshes it. Mark flicker and hydration mismatch as risks unless deterministic.
-
-### Likely ownership
-
-Foundation/layout for theme and fonts; primitive for measurement lifecycle; consumer for media dimensions and data placeholders.
+Describe the state machine and source of truth. Cite the owner, transition paths, and consumers. Separate domain policy from reusable interaction mechanics. Ownership belongs at the lowest common ancestor that understands the decision without acquiring unrelated responsibilities.
 
 ### Runtime confirmation
 
-Required for hydration warnings, flash duration, web-font shifts, observer timing, portal placement, and real-device first paint.
+Required for races, interruption, hydration, focus/scroll loss, and controlled/uncontrolled synchronization.
 
-## 9. UI regression protection
+## 8. Responsive layout, interaction, motion, and stability
 
 ### Inventory
 
-- Unit/component/E2E/visual/a11y tests, test scripts, CI commands, representative fixtures, reduced-motion coverage, and geometry assertions.
+- Layout primitives, intrinsic sizing, breakpoints, container behavior, overflow, zoom, localization, and safe areas.
+- Control feedback, navigation, overlays, replacement content, loading/error states, motion hierarchy, interruption, reduced motion, and first paint.
+- Geometry changes across rest, focus, selected, loading, and validation states.
 
-### Reliable source signals
+### Reliable signals
 
-- Complex shared state, measurement, focus, or animation code has no focused tests.
-- Tests assert presence but not interaction continuity or accessible state.
-- Visual snapshots exist without keyboard/state tests, or vice versa.
-- No test covers rapid interruption, unequal content, long labels, narrow widths, or reduced motion where those are material risks.
+- Page layouts depend on fixed dimensions without content or viewport escape paths.
+- Components own page layout assumptions or consumers patch component internals at breakpoints.
+- Repeated controls change box metrics or broad transitions animate future geometry.
+- Entering/exiting replacement content occupies multiple flow slots.
+- Feedback appears far from its action, displaces unrelated content, or races.
+- CSS and imperative motion bypass the shared hierarchy or reduced-motion policy.
+- Geometry is published before valid measurement or first paint visibly corrects essential layout.
 
-### Common false positives
+### False positives
 
-- Tests live in a separate workspace or CI repository; search before declaring absence.
-- A low-risk presentational component may not warrant isolated tests.
-- Type/lint coverage is useful but is not interaction coverage.
-- Manual release checks may be documented outside package scripts.
+- Intentional content growth, dense desktop panes, media frames, and bounded data tables can require fixed or scrolling regions.
+- Transform animation does not itself alter layout geometry.
+- A documented one-time expressive entrance may differ from repeated feedback.
+- Components may expose responsive slots while compositions own final rearrangement.
 
-### Evidence standard
+### Evidence and ownership
 
-Cite the risky implementation and the closest package/test configuration lines. State the search roots and patterns used for absence claims. Tie recommended tests to a specific invariant, not generic coverage.
-
-### Likely ownership
-
-Regression-test layer, with fixtures owned near the primitive or flow being protected.
+Trace the page layout and component anatomy together. Cite state branches, measurements, and breakpoint ownership. Phrase final movement, clipping, and pacing as source-inferred unless deterministic. Layout decisions usually belong to compositions; reusable internal containment belongs to components/primitives.
 
 ### Runtime confirmation
 
-Not needed to prove test presence. Running the existing suite is outside a read-only source audit unless the user separately authorizes it; report the commands and expected assertions instead.
+Required for bounding boxes, actual overflow, zoom/localization, focus continuity, frame rate, perceived pacing, layout shift, and reduced-motion output.
+
+## 9. Semantics, accessibility, and inclusive states
+
+### Inventory
+
+- Native elements, names, roles, states, relationships, landmarks, focus, keyboard/touch, contrast intent, reduced motion, large text, errors, status, disabled/pending states, and content alternatives.
+- Whether semantic/accessibility behavior is guaranteed by primitives or reconstructed by consumers.
+
+### Reliable signals
+
+- Generic elements reproduce native controls or ARIA roles omit required behavior.
+- Component APIs make accessible naming or relationships optional when meaning is known.
+- Visual hierarchy relies solely on color, position, hover, or motion.
+- Focus and error/status behavior are patched per consumer instead of owned centrally.
+- Compact visual controls have no larger interaction target or density mode.
+- Loading, empty, error, and disabled states lose essential actions or context.
+
+### False positives
+
+- An imported semantic primitive may supply behavior invisible at the consumer.
+- Browser-native focus may be intentionally preserved.
+- `aria-label` is not required when a valid visible or associated name exists.
+- Different input modes may have different enhancements while retaining equivalent access.
+
+### Evidence and ownership
+
+Trace semantics across abstractions and cite the owning primitive plus consumers. Treat accessibility as part of component architecture, not a page-level cleanup. Do not claim standards conformance from source alone.
+
+### Runtime confirmation
+
+Required for accessibility-tree output, focus order/visibility, announcements, computed contrast, zoom, touch, and assistive-technology behavior.
+
+## 10. Documentation, stories, tests, and governance
+
+### Inventory
+
+- Component documentation, usage guidance, stories/examples, design references, visual fixtures, unit/component/E2E/visual/accessibility tests, lint rules, and CI gates.
+- Coverage of variants, content extremes, themes, responsive states, interaction states, and intentional exceptions.
+- Whether examples model recommended architecture or merely demonstrate prop permutations.
+
+### Reliable signals
+
+- A component has a complex API but no canonical examples or discouraged combinations.
+- Stories showcase isolated atoms but not representative page compositions.
+- Visual tests snapshot pixels without protecting hierarchy, state, or responsive relationships.
+- Behavioral tests ignore design invariants; design reviews lack executable regression protection.
+- Documentation, code defaults, and actual consumers disagree.
+- No workflow catches consumer overrides, unsupported variants, or token drift.
+
+### False positives
+
+- Low-risk internal components may not need dedicated stories.
+- Not every visual decision needs a screenshot test.
+- Tests may live in a separate workspace or external CI; search before declaring absence.
+- Manual design review remains valuable for qualities automation cannot measure.
+
+### Evidence and ownership
+
+Cite the component/API risk and nearest docs/test/manifest evidence. Tie each proposed guard to a specific design or architecture invariant. Governance owns enforcement; component teams own representative fixtures.
+
+### Runtime confirmation
+
+Not needed to establish presence or absence. Executing tests is outside this read-only audit unless separately authorized; name the expected checks and commands only when source evidence supports them.

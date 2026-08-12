@@ -1,150 +1,167 @@
 ---
 name: auditing-interface-quality
-description: Use when reviewing frontend source for UI consistency, design-system drift, unstable layout or state changes, inconsistent interaction behavior, motion quality, responsive defects, or accessibility patterns, and the user wants prioritized remediation guidance without implementation.
+description: Use when reviewing frontend source for design quality and UI/component architecture, including visual hierarchy, composition, typography, color, spacing, density, design-system coherence, component boundaries, APIs, variants, state ownership, reuse, responsive behavior, interaction quality, accessibility, or stability, and the user wants prioritized remediation guidance without implementation.
 ---
 
 # Auditing Interface Quality
 
 ## Overview
 
-Audit frontend source for the systems that make an interface feel coherent, predictable, and physically stable. Infer the project's own interface language first, then produce evidence-backed remediation guidance without editing the application.
+Audit two inseparable qualities: whether the interface expresses a clear, coherent design and whether its component architecture can preserve that quality as the product evolves.
 
-**Core principle:** Stable UI is not motionless UI. It preserves geometry, identity, state continuity, input behavior, and feedback locality while change occurs.
+**Core principle:** A polished screen built on weak components will drift, while tidy components without visual intent produce generic UI. Evaluate design decisions and the architecture that carries them together.
 
 ## Boundaries
 
 - Keep the audit read-only. Do not edit application source, install dependencies, or apply remediation.
-- Use source, project documentation, configuration, and existing tests only. Do not require or use a browser in this workflow.
-- Do not consult external library documentation, web sources, design guidelines, or standards to fill source gaps. If a higher-priority instruction explicitly requires external context, disclose it under evidence boundaries and never use it as evidence of project behavior.
-- Report source facts as facts. Label rendering-dependent behavior as a **source-inferred risk** and name the runtime check needed to confirm it.
-- Do not claim visual appearance, accessibility conformance, performance, layout-shift magnitude, or cross-browser behavior from source alone.
-- Preserve documented product-specific exceptions. Audit consistency with the project's language, not conformity to a preferred aesthetic.
+- Use source, project documentation, configuration, stories, and existing tests only. Do not require or use a browser in this workflow.
+- Do not consult external library documentation, web sources, design guidelines, or standards to fill source gaps. If higher-priority instructions require external context, disclose it and never use it as evidence of project behavior.
+- Report declarations, structure, and control flow as **facts**. Label final visual or runtime outcomes as **source-inferred risks** and name the check needed to confirm them.
+- Do not substitute personal taste for product intent. Preserve deliberate brand, marketing, editorial, platform, and feature-specific exceptions.
+- Do not reduce design quality to token compliance, accessibility, or motion polish. Assess hierarchy, composition, clarity, character, and component architecture explicitly.
 
 ## Required Workflow
 
 ### 1. Establish the evidence boundary
 
-Identify the project root, source areas reviewed, excluded areas, available design documentation, and whether tests exist. State that the result is source-only before presenting findings.
+Identify the project root, frontend areas reviewed, excluded surfaces, design documentation, stories/examples, and available tests. State the source-only limitation before findings.
 
-### 2. Infer the project's interface language
+### 2. Infer product and design intent
 
-Inspect, in this order:
+Inspect, in order:
 
-1. design-system, brand, accessibility, and contribution documentation;
-2. global tokens, theme files, typography, spacing, radii, elevation, layers, breakpoints, and motion constants;
-3. shared primitives and composition patterns;
-4. representative consumers, routes, stateful surfaces, and tests.
+1. product, brand, design-system, content, and accessibility documentation;
+2. representative pages or feature compositions, especially primary workflows;
+3. typography, color, spacing, density, radius, elevation, layer, breakpoint, and motion foundations;
+4. shared UI primitives, components, stories, examples, and tests.
 
-Record intended rules separately from implementation conventions. Treat recurring, coherent implementation as an inferred convention only when documentation is silent.
+Describe the intended audience, task hierarchy, visual character, information density, and interaction posture. Separate documented intent from recurring implementation conventions.
 
-### 3. Inventory interactive surfaces and state changes
+### 3. Map the UI architecture
 
-Map representative controls, navigation, replacement content, overlays, asynchronous feedback, loading/empty/error states, responsive rearrangements, and focus transitions. Follow shared components to their consumers so one defect is not misreported as many unrelated defects.
+Trace representative UI through these layers:
 
-### 4. Audit all nine quality systems
+1. **Foundations:** tokens, themes, type scale, spacing, breakpoints, motion, icons.
+2. **Primitives:** semantic controls and low-level layout or overlay behavior.
+3. **Components:** reusable product-aware elements with bounded responsibilities.
+4. **Compositions:** repeated page sections and workflow patterns.
+5. **Features/pages:** domain state, content, data, and routing.
+6. **Governance:** stories, tests, documentation, lint rules, and review gates.
+
+Record ownership leaks, duplicated decisions, unclear boundaries, prop/variant complexity, and consumer overrides. Follow shared components to representative consumers before judging their architecture.
+
+### 4. Audit all ten quality systems
 
 Read [references/audit-rubric.md](references/audit-rubric.md), then evaluate:
 
-1. visual-system consistency;
-2. layout and geometry stability;
-3. state and content continuity;
-4. interaction and input behavior;
-5. motion behavior;
-6. responsive layout and overflow;
-7. accessibility and focus;
-8. rendering, measurement, and first paint;
-9. UI regression protection.
+1. product intent and visual direction;
+2. hierarchy, composition, and content clarity;
+3. typography, color, spacing, density, and surface quality;
+4. design-system coherence and token architecture;
+5. component boundaries and layer ownership;
+6. component APIs, variants, slots, and composition;
+7. state, behavior, and data ownership;
+8. responsive layout, interaction, motion, and stability;
+9. semantics, accessibility, and inclusive states;
+10. documentation, stories, tests, and design governance.
 
-Mark a category **no material finding** when evidence does not support a problem. Do not manufacture one finding per category.
+Mark a category **no material finding** when evidence does not support a problem. Do not manufacture coverage findings.
 
-### 5. Build an evidence ledger
+### 5. Build a design-and-architecture evidence ledger
 
 For every candidate finding, capture:
 
 - exact `file:line` evidence;
 - **Fact** or **Source-inferred risk**;
-- affected components and known consumers;
-- the documented rule or inferred convention involved;
-- the likely causal mechanism;
-- the runtime check needed, if any.
+- intended design rule or inferred convention;
+- design consequence: hierarchy, clarity, coherence, density, character, or feedback;
+- architecture consequence: ownership, reuse, API complexity, drift, or change cost;
+- affected layers, components, and known consumers;
+- causal mechanism and runtime confirmation, if needed.
 
-For absence findings, cite the closest manifest, configuration, or implementation line and state the directories and filename patterns searched.
+For absence findings, cite the nearest manifest, implementation, or configuration line and state the search scope.
 
-### 6. Synthesize symptoms into patterns
+### 6. Synthesize causes across both lenses
 
-Do not publish the evidence ledger as a flat bug list. Group symptoms that share a cause, then separate:
+Do not publish a style-literal inventory or component-by-component critique. Group symptoms under causes, then name:
 
-- **root cause** — the missing invariant, abstraction, policy, or state contract;
-- **symptoms** — visible or behavioral consequences;
-- **ownership layer** — foundation/token, primitive, shared component, feature consumer, or regression test.
+- **design problem** — the user-facing loss of hierarchy, clarity, coherence, identity, or quality;
+- **architecture cause** — the misplaced decision, missing abstraction, overloaded API, leaky boundary, or absent governance;
+- **ownership layer** — foundation, primitive, component, composition, feature/page, or governance;
+- **blast radius** — isolated, trend, or shared implementation with known consumers.
 
-Call something a **trend** only when there are at least two independent occurrences, or one shared implementation with multiple known consumers. Otherwise call it an isolated finding or shared-component risk.
+Call something a **trend** only with two independent occurrences. One shared implementation with several consumers is a **shared-component risk**, not multiple findings.
 
-### 7. Prioritize remediation
+### 7. Prioritize high-leverage remediation
 
-Use the severity and confidence predicates in [references/report-template.md](references/report-template.md). Prefer foundation-first fixes that remove several symptoms, but do not recommend broad abstraction when evidence supports only one local defect.
+Use [references/report-template.md](references/report-template.md) for severity and confidence. Prioritize work that improves visible design quality and removes the architectural cause. Do not recommend a design-system expansion when a local composition is the correct owner, or a local restyle when the primitive/API guarantees recurring drift.
 
-For each material finding, create a remediation card using [references/remediation-patterns.md](references/remediation-patterns.md). Every card must name the root cause, ownership layer, ordered application steps, implementation risks, verification method, and a measurable **Done when** condition.
+Build remediation cards with [references/remediation-patterns.md](references/remediation-patterns.md). Each card must define a target design outcome, target architecture, primary owner, ordered steps, migration risks, verification, and measurable **Done when** conditions.
 
 ### 8. Produce the report
 
-Follow [references/report-template.md](references/report-template.md) exactly. Use [references/worked-example.md](references/worked-example.md) to calibrate synthesis depth, not as a source of project findings.
+Follow [references/report-template.md](references/report-template.md). Read [references/worked-example.md](references/worked-example.md) when design symptoms and architectural causes are difficult to separate.
 
-Scale depth to scope. For a representative audit of ten or fewer frontend files, publish at most three causal groups unless additional P0/P1 findings are evidenced, and target roughly 1,000–1,800 words. For a repository-scale representative audit, prefer three to five cross-cutting groups and roughly 2,000–3,500 words. Exceed those bounds only for additional high-severity findings or when the user explicitly requests exhaustive coverage. Never remove a required field to meet a length target; eliminate duplicated evidence prose and low-value symptom detail first.
+Scale depth to scope. A small audit normally needs at most three causal groups; a repository-scale representative audit normally needs three to five. Additional high-severity findings take precedence. Remove repeated evidence and low-value symptom detail before removing required fields.
 
 ## Evidence Rules
 
-- Cite every material finding with at least one exact `file:line` reference.
-- Cite the shared implementation and representative consumers when reporting shared blast radius.
-- Keep facts and inferences visibly separate; do not hide uncertainty in confident prose.
-- Prefer the smallest claim the evidence proves.
-- Distinguish a policy violation from a missing policy.
-- Distinguish intentional variation from accidental drift.
-- Do not assign a severity above the evidenced user impact.
-- Do not prescribe a library rewrite when the existing stack can enforce the invariant.
+- Cite every material finding with exact `file:line` evidence.
+- Cite representative pages and consumers, not only token or primitive definitions.
+- Judge design quality against inferred product intent and internal relationships, not generic aesthetic preferences.
+- Distinguish visual symptoms from their architectural cause.
+- Distinguish architecture quality from file size, abstraction count, or component count.
+- Treat reuse as valuable only when consumers share meaning, behavior, and change cadence.
+- Keep facts and inferences visibly separate.
+- Preserve deliberate exceptions and local opt-outs with clear ownership.
+- Prefer the smallest claim and narrowest ownership layer the evidence proves.
 
 ## Reference Routing
 
 - Read [references/audit-rubric.md](references/audit-rubric.md) before collecting findings.
-- Read [references/remediation-patterns.md](references/remediation-patterns.md) when forming remediation cards.
-- Read [references/report-template.md](references/report-template.md) before writing the final report.
-- Read [references/worked-example.md](references/worked-example.md) when symptoms, root causes, or ownership boundaries are unclear.
+- Read [references/remediation-patterns.md](references/remediation-patterns.md) before designing the target architecture.
+- Read [references/report-template.md](references/report-template.md) before writing the report.
+- Read [references/worked-example.md](references/worked-example.md) when calibrating synthesis depth.
 
 ## Completion Gate
 
-Before returning the audit, confirm all of the following:
+Confirm all of the following before returning the audit:
 
-- The evidence boundary and unverified runtime behavior are explicit.
-- No undisclosed external documentation or web evidence informed the audit.
-- The project's interface language and intentional exceptions are preserved.
+- Product intent and visual direction are described before critique.
+- Design quality and component architecture each receive an explicit assessment.
+- The architecture map traces foundations through pages and governance.
 - Every finding has exact evidence and a fact/inference label.
-- Every trend meets the two-occurrence or shared-consumer threshold.
-- Symptoms are grouped under root causes rather than duplicated as findings.
-- Every remediation names one primary ownership layer.
-- Application steps are ordered and do not silently broaden scope.
-- Risks, verification, and a measurable `Done when` condition are present.
-- The roadmap orders foundation, primitive, consumer, and test work coherently.
-- No source was modified and no unsupported runtime claim is presented as observed.
+- Every finding names both its design consequence and architecture cause.
+- Every trend meets the occurrence threshold.
+- One primary ownership layer is named per remediation.
+- Ordered steps improve the system without erasing intentional character.
+- Component/API changes include consumer and migration implications.
+- Verification covers visible quality and architectural enforcement.
+- `Done when` conditions are observable and specific.
+- No application source was modified or runtime result presented as observed.
+- No undisclosed external evidence informed the audit.
 
 ## Quick Reference
 
-| Question                  | Required answer                                                      |
-| ------------------------- | -------------------------------------------------------------------- |
-| What is true?             | Source fact with `file:line` evidence                                |
-| What might happen?        | Source-inferred risk plus runtime confirmation                       |
-| Is it a trend?            | Two occurrences or one shared implementation with multiple consumers |
-| Where should it be fixed? | One named ownership layer                                            |
-| How should it be fixed?   | Ordered, framework-compatible steps                                  |
-| When is it complete?      | Observable `Done when` predicate                                     |
+| Question                         | Required answer                               |
+| -------------------------------- | --------------------------------------------- |
+| What should this UI communicate? | Product intent and hierarchy                  |
+| Does it communicate that well?   | Design-quality assessment with evidence       |
+| What carries the design?         | Foundation-to-page architecture map           |
+| Why will the issue recur?        | Architecture cause and ownership leak         |
+| Where should it change?          | One primary ownership layer                   |
+| What should replace it?          | Target design outcome and target architecture |
+| When is it complete?             | Visual and structural pass/fail conditions    |
 
 ## Common Mistakes
 
-- Listing every hard-coded value without first inferring whether the project uses tokens.
-- Treating all motion as instability instead of checking geometry and state continuity.
-- Reporting the same primitive defect once per consumer.
-- Recommending local patches for a foundation-level invariant.
-- Calling a plausible render outcome an observed defect.
-- Importing external library behavior or design standards into a source-only conclusion.
-- Treating one unusual instance as a systemic trend.
-- Overriding a documented marketing or product exception with generic taste.
-- Ending with “test this” instead of specifying scenario, observation, and pass condition.
+- Treating design quality as a list of raw values or accessibility violations.
+- Praising consistency when the consistent result is visually weak or generic.
+- Reviewing primitives without tracing the page compositions they produce.
+- Calling any repeated markup a component opportunity without shared semantics.
+- Creating a universal component for feature-specific content or behavior.
+- Letting a generic component accumulate boolean props for unrelated use cases.
+- Recommending page-level overrides for primitive or foundation defects.
+- Focusing on motion and stability while ignoring hierarchy, composition, and content.
+- Calling a plausible rendered result an observed fact.
+- Ending with “improve the component system” without a target ownership model.

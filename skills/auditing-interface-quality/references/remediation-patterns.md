@@ -1,350 +1,322 @@
-# Remediation Patterns
+# Design and Component Architecture Remediation Patterns
 
-Choose the smallest pattern that restores the missing invariant in the project's existing stack. These are implementation shapes, not mandatory libraries.
+Choose the smallest pattern that restores design intent at the correct layer. A good remediation improves the visible result and makes that quality harder to lose.
 
 ## Contents
 
-1. [Reserve geometry across control states](#1-reserve-geometry-across-control-states)
-2. [Overlap replacement content](#2-overlap-replacement-content)
-3. [Remove feedback from content flow](#3-remove-feedback-from-content-flow)
-4. [Measure before publishing geometry](#4-measure-before-publishing-geometry)
-5. [Preserve mounted identity](#5-preserve-mounted-identity)
-6. [Localize feedback](#6-localize-feedback)
-7. [Preserve controlled and uncontrolled continuity](#7-preserve-controlled-and-uncontrolled-continuity)
-8. [Stabilize first paint](#8-stabilize-first-paint)
-9. [Contain responsive content](#9-contain-responsive-content)
-10. [Restore semantic primitives](#10-restore-semantic-primitives)
-11. [Establish motion hierarchy](#11-establish-motion-hierarchy)
-12. [Honor reduced motion across renderers](#12-honor-reduced-motion-across-renderers)
-13. [Protect invariants with regression tests](#13-protect-invariants-with-regression-tests)
+1. [Establish a design hierarchy contract](#1-establish-a-design-hierarchy-contract)
+2. [Create semantic visual foundations](#2-create-semantic-visual-foundations)
+3. [Encode spacing and density rhythm](#3-encode-spacing-and-density-rhythm)
+4. [Define the UI layer model](#4-define-the-ui-layer-model)
+5. [Extract a semantic component](#5-extract-a-semantic-component)
+6. [Split an overloaded component](#6-split-an-overloaded-component)
+7. [Replace prop permutations with composition](#7-replace-prop-permutations-with-composition)
+8. [Design a constrained component API](#8-design-a-constrained-component-api)
+9. [Move state to the correct owner](#9-move-state-to-the-correct-owner)
+10. [Make responsive structure compositional](#10-make-responsive-structure-compositional)
+11. [Preserve feedback, motion, and geometry](#11-preserve-feedback-motion-and-geometry)
+12. [Turn design intent into governance](#12-turn-design-intent-into-governance)
 
 ## Ownership rule
 
-Assign one primary layer per remediation:
+Assign one primary owner:
 
-- **Foundation/token:** a reusable value or policy is absent or contradictory.
-- **Primitive:** semantics, state mechanics, geometry, or input behavior should hold for every instance.
-- **Shared component:** product-specific composition or feedback is repeated.
-- **Feature consumer:** the rule depends on domain content or workflow intent.
-- **Regression test:** the behavior exists but is not protected.
+- **Foundation:** recurring visual or behavioral vocabulary.
+- **Primitive:** low-level semantics, interaction, or internal containment.
+- **Component:** reusable product-aware anatomy and bounded behavior.
+- **Composition:** repeated section or workflow arrangement.
+- **Feature/page:** domain content, state, and task-specific hierarchy.
+- **Governance:** documentation, stories, tests, lint, and review gates.
 
-List downstream consumers separately. Do not make every consumer co-own a primitive defect.
+Do not move a decision upward merely to maximize reuse. Move it to the narrowest layer that can express its meaning and enforce it across actual consumers.
 
-## 1. Reserve geometry across control states
-
-### Apply when
-
-Hover, focus, selected, loading, or validation state changes alter font metrics, border thickness, padding, label width, or icon occupancy and can move adjacent content.
-
-### Sequence
-
-1. Identify the largest or widest valid state for each changing slot.
-2. Keep box-model properties and font metrics constant when possible.
-3. Express state with color, opacity, background, outline, or a fixed-space indicator.
-4. If content must change, reserve its slot with a fixed inline/block size or a hidden sizing copy that does not enter the accessibility tree.
-5. Put progress and success icons into the same reserved slot.
-
-### Risks
-
-- A hard-coded width can fail for localization or user font scaling.
-- Invisible sizing text can be announced if not hidden correctly.
-- Reserving excessive space can weaken compact layouts.
-
-### Verify
-
-Compare the control and neighboring bounding boxes before and after every state at short, long, localized, and zoomed labels. **Done when:** state changes do not move the control's outer box or adjacent stable controls beyond the project's documented tolerance.
-
-## 2. Overlap replacement content
+## 1. Establish a design hierarchy contract
 
 ### Apply when
 
-Tabs, carousels, route sections, step content, or filtered results animate outgoing and incoming content that should occupy one conceptual slot.
+Pages have weak or inconsistent priority, every section looks equivalent, actions compete, or the code contains many unrelated choices for headings, containers, and emphasis.
 
 ### Sequence
 
-1. Create one persistent slot owned by the parent.
-2. Place outgoing and incoming children in the same grid area or positioned layer.
-3. Decide the height policy: fixed/reserved, smoothly measured, or content-driven after replacement.
-4. Keep inactive content out of pointer and accessibility interaction at the correct lifecycle point.
-5. Define interruption behavior for rapid repeated selection.
+1. Name the page's primary task, secondary tasks, supporting context, and exceptional states.
+2. Define semantic content roles: page title, section heading, body, metadata, primary action, secondary action, and status.
+3. Map each role to typography, spacing, surface, and action emphasis already present where possible.
+4. Apply the contract to one representative page composition before generalizing.
+5. Promote only relationships that recur across pages with the same meaning.
 
 ### Risks
 
-- Positioned children can remove all height unless the parent owns sizing.
-- Both states may be announced or clickable during overlap.
-- Serial exit/enter can leave an undesirable empty interval.
+- A rigid universal hierarchy can erase legitimate workflow differences.
+- Changing type or action emphasis without content review can reveal unclear copy.
+- A token-only solution may leave poor page grouping untouched.
 
 ### Verify
 
-Use unequal-height content, rapid switching, keyboard focus, and reduced motion. **Done when:** outgoing and incoming content never create two normal-flow rows, downstream content follows the declared height policy, and only the active state is operable.
+Review primary, empty, loading, error, and completed states at representative content lengths. **Done when:** the intended reading and action order is explicit in source, repeated page structures use the same semantic roles, and exceptions are locally owned and documented.
 
-## 3. Remove feedback from content flow
+## 2. Create semantic visual foundations
 
 ### Apply when
 
-Validation, copy confirmation, save status, loading text, or transient banners push otherwise stable content for short-lived feedback.
+Color, type, surface, elevation, radius, or motion decisions recur under raw or scale-only names and consumers cannot express product meaning consistently.
 
 ### Sequence
 
-1. Keep permanent instructions and actionable errors in flow when users need to read or revisit them.
-2. For transient feedback, reserve a status slot or anchor an overlay to the originating control/region.
-3. Give the feedback stable dimensions or a bounded wrap policy.
-4. Announce status with the least disruptive live-region behavior appropriate to urgency.
-5. Preserve a non-transient recovery path for errors.
+1. Inventory recurring roles from representative pages, not only existing literals.
+2. Keep primitive scales private where possible and expose semantic roles such as surface, text hierarchy, control feedback, or overlay layer.
+3. Map themes and renderers to one semantic vocabulary.
+4. Move component anatomy to recipes or variants only when the combination recurs.
+5. Define bounded exception and opt-out paths.
 
 ### Risks
 
-- Overlay feedback can cover content or clip inside overflow ancestors.
-- Reserving space for rare messages can create unexplained gaps.
-- Auto-dismissed errors may disappear before users can act.
+- Tokenizing every value creates an unusable vocabulary.
+- Semantic names that mirror one page age poorly.
+- Global aliases can change unrelated surfaces unexpectedly.
 
 ### Verify
 
-Trigger success, error, repeated action, long text, and narrow layout. **Done when:** feedback is perceivable and associated with its trigger without unintended movement or loss of recovery information.
+Trace each new role through at least two meaningful consumers and every supported theme. **Done when:** product concepts have one comprehensible name, consumers no longer duplicate the evidenced decision, and local optical values remain local.
 
-## 4. Measure before publishing geometry
+## 3. Encode spacing and density rhythm
 
 ### Apply when
 
-Drawers, expandable code, virtualized content, popups, or layout animation depend on a measured size and the first measurement may be missing or stale.
+Adjacent surfaces use inconsistent control heights, section gaps, padding, or information density, or when spacing values exist without describing relationships.
 
 ### Sequence
 
-1. Define a safe pre-measure state that does not expose wrong geometry.
-2. Measure the element at the lifecycle point required by the rendering model.
-3. Observe the element or content source that can actually change; window resize alone is rarely sufficient.
-4. Publish geometry only after a valid value exists.
-5. Reconcile measurement updates without restarting unrelated interaction state.
-6. Clean up observers and pending callbacks.
+1. Separate macro composition spacing, component anatomy, inline gaps, and optical correction.
+2. Define density modes only when the product has real compact/comfortable contexts.
+3. Let components own internal anatomy and compositions own relationships between components.
+4. Use semantic layout primitives or recipes for recurring stacks, clusters, grids, and sections.
+5. Test realistic long labels, metadata, and empty states before standardizing.
 
 ### Risks
 
-- Hiding until measurement can create a blank flash.
-- Layout-synchronous measurement can block rendering if repeated broadly.
-- Observer loops can occur when measured styles change the measured size.
+- A global spacing scale does not guarantee good rhythm.
+- Density variants can multiply component combinations.
+- Uniform gaps can flatten semantic grouping.
 
 ### Verify
 
-Test first open, font/media load, dynamic content, resize, zoom, and rapid close. **Done when:** no invalid fallback is visibly animated, measurements update for every real size source, and cleanup prevents stale updates.
+Compare related pages and component states at standard and compact contexts. **Done when:** hierarchy is reinforced by repeatable relationships, component boxes align where they should, and density changes are deliberate modes rather than consumer overrides.
 
-## 5. Preserve mounted identity
+## 4. Define the UI layer model
 
 ### Apply when
 
-Presentation-only state changes remount controls or content, resetting focus, selection, scroll, input, media, or animation continuity.
+Foundations, primitives, components, compositions, and pages import or own each other's concerns; teams cannot tell where a design decision belongs.
 
 ### Sequence
 
-1. Identify which element represents the stable user-facing object.
-2. Keep that owner mounted and change attributes, descendants, or visual layers instead of replacing it.
-3. Use stable domain IDs for keys; never rely on list position for reorderable state.
-4. Move intentionally reset state to an explicit boundary and document the reset trigger.
-5. Hand focus off before any necessary unmount.
+1. Write one-sentence responsibilities for every observed layer.
+2. Map import direction and public extension points.
+3. Identify decisions currently owned above or below the layer that understands them.
+4. Move enforcement to the narrowest correct owner while keeping domain policy in features.
+5. Add dependency or review guards only for boundaries that materially prevent drift.
 
 ### Risks
 
-- Retained hidden state can become stale or expose sensitive content.
-- Over-preserving components can keep expensive subscriptions alive.
-- A stable key cannot fix state owned at the wrong level.
+- A theoretical layer model can create folders without better responsibilities.
+- Moving code for purity can increase indirection.
+- Strict import rules can block legitimate composition.
 
 ### Verify
 
-Exercise the transition with focused inputs, selection, scroll, media, and repeated interruption. **Done when:** identity persists wherever product intent says it should, and intentional resets occur only at named boundaries.
+Walk a representative change from foundation to page. **Done when:** each layer has a bounded role, dependencies point toward lower-level capability rather than feature policy, and a design change has an obvious primary owner.
 
-## 6. Localize feedback
+## 5. Extract a semantic component
 
 ### Apply when
 
-The outcome of an action is shown in a distant global region, replaces unrelated content, or is communicated only by a small icon/state change.
+Several pages repeat the same meaning, anatomy, behavior, and change cadence—not merely similar markup or styling.
 
 ### Sequence
 
-1. Keep immediate feedback adjacent to or inside the initiating control without changing its outer geometry.
-2. Use a nearby status message for detail and recovery.
-3. Change the accessible name/state when the control's meaning changes.
-4. Prevent repeated actions and timers from racing the visible result.
-5. Escalate to global notification only when the result is truly global or persists across navigation.
+1. Compare consumers and identify the shared user-facing concept.
+2. Separate invariant anatomy/behavior from domain content and layout context.
+3. Give the component a semantic name and strong default.
+4. Expose only variation already demonstrated by consumers.
+5. Migrate representative consumers and delete parallel recipes.
 
 ### Risks
 
-- Multiple live regions can create noisy announcements.
-- Replacing labels can alter width unless space is reserved.
-- A disabled pending control can trap focus or hide cancellation.
+- Visual similarity can hide different semantics.
+- Extracting before consumers stabilize creates speculative props.
+- A component can absorb page layout and become hard to place.
 
 ### Verify
 
-Test success, failure, repeated activation, keyboard focus, and assistive output. **Done when:** users can associate outcome with action, recover from failure, and observe no geometry or timer race.
+Implement change scenarios mentally or in tests across all known consumers. **Done when:** the component expresses one shared concept, consumers supply content rather than reconstruct anatomy, and future shared changes have one owner.
 
-## 7. Preserve controlled and uncontrolled continuity
+## 6. Split an overloaded component
 
 ### Apply when
 
-A component supports both internal state and caller-owned state, or mirrors props into local state.
+One component owns unrelated product modes, domain behavior, page layout, data fetching, or large conditional anatomies.
 
 ### Sequence
 
-1. Define the source of truth for controlled and uncontrolled modes.
-2. Treat `value` plus change callback as controlled; treat `defaultValue` as initialization only.
-3. Route all state transitions through one update function.
-4. Never switch modes silently after mount; warn or document if the framework supports diagnostics.
-5. Keep pending animation/measurement state subordinate to the authoritative value.
-6. Test external updates, rejected updates, and rapid changes.
+1. List responsibilities and the consumers that require each one.
+2. Separate reusable mechanics from product compositions and domain state.
+3. Keep a stable primitive/component core only where behavior and anatomy genuinely recur.
+4. Create named compositions for coherent product modes instead of one universal branch tree.
+5. Preserve migration compatibility only where it has a defined removal path.
 
 ### Risks
 
-- Optimistic internal state can diverge from a controlled prop.
-- A closure can publish stale state during rapid input.
-- Mode detection based only on truthiness mishandles valid empty values.
+- Splitting by line count creates fragments with no independent meaning.
+- Excessive wrappers obscure control flow.
+- A compatibility facade can become permanent duplicate architecture.
 
 ### Verify
 
-Run the same behavior matrix in controlled and uncontrolled modes. **Done when:** externally supplied state remains authoritative, defaults initialize once, and rapid transitions cannot expose stale selection or feedback.
+Test common change requests against the target boundaries. **Done when:** each unit has one coherent reason to change, feature policy stays out of lower layers, and consumers no longer depend on unrelated modes.
 
-## 8. Stabilize first paint
+## 7. Replace prop permutations with composition
 
 ### Apply when
 
-Theme, preference, client-only data, fonts, media, or initial animation changes essential appearance or geometry after the initial markup is visible.
+Boolean or enumerated props create invalid combinations, page-specific modes, or conditional trees that callers must understand as an implicit state machine.
 
 ### Sequence
 
-1. Determine what can be known on the server or before first paint.
-2. Establish theme and other visual preferences before content paint when feasible.
-3. Make server and client initial structure agree.
-4. Reserve media and font-dependent geometry with dimensions, aspect ratio, or metric-compatible fallbacks.
-5. Disable decorative initial animation for already-present default content when repeat entrance adds no meaning.
-6. Isolate truly client-only decoration so it cannot move essential layout.
+1. Build a matrix of current prop combinations and actual consumers.
+2. Separate orthogonal behavior from mutually exclusive semantic modes.
+3. Replace semantic modes with named components, variants, or compound composition as appropriate.
+4. Use slots for content placement where anatomy is stable and content varies.
+5. Remove unsupported combinations and provide migration examples.
 
 ### Risks
 
-- Blanket hiding until hydration delays useful content.
-- Suppressing mismatch warnings can conceal real structural divergence.
-- Preference scripts can violate security policy if integrated carelessly.
+- Compound APIs can be heavier than explicit props.
+- Splitting variants can duplicate legitimate shared behavior.
+- Polymorphism can weaken semantics and typing.
 
 ### Verify
 
-Inspect cold load, slow device/network, theme variants, cached/uncached fonts, and hydration logs. **Done when:** essential structure and theme do not visibly correct themselves after paint and server/client ownership is explicit.
+Express every real consumer with the new API and attempt previously invalid combinations. **Done when:** supported modes are obvious, invalid combinations are unrepresentable or rejected, and callers no longer coordinate internal implementation flags.
 
-## 9. Contain responsive content
+## 8. Design a constrained component API
 
 ### Apply when
 
-Long content, narrow screens, zoom, dynamic viewport height, safe areas, overlays, or nested scrolling can clip or make actions unreachable.
+Every consumer repeats configuration, overrides internals, passes style escape hatches, or cannot express legitimate content and layout variations cleanly.
 
 ### Sequence
 
-1. Prefer intrinsic layout with sensible min/max constraints.
-2. Allow flex/grid children to shrink or wrap where content policy permits.
-3. Define explicit truncation plus discovery, wrapping, or scrolling behavior for long values.
-4. Bound overlays to the dynamic viewport and give their body a deliberate scroll owner.
-5. Add edge collision/portal behavior at the shared overlay layer.
-6. Use document scrolling on compact layouts unless independent panes serve a tested need.
+1. Define the component's semantic responsibility and non-negotiable design invariants.
+2. Choose strong defaults from representative consumers.
+3. Expose semantic variants for meaningful recurring roles.
+4. Expose named slots or composition points for legitimate structure variation.
+5. Keep internal state/DOM/style details private unless consumers must coordinate them.
+6. Document unsupported use cases and intentional escape hatches.
 
 ### Risks
 
-- Multiple nested scroll owners harm keyboard, touch, and restoration behavior.
-- Truncation without access to the full value loses information.
-- Portals can complicate layering, theming, and reading order.
+- Over-constraining forces forks and wrappers.
+- Unrestricted class/style props make all invariants optional.
+- Semantic names can become vague dumping grounds.
 
 ### Verify
 
-Test 320 CSS px, large text/zoom, localization extremes, short landscape viewport, software keyboard, safe areas, and popup edges. **Done when:** essential content and dismissal/actions remain reachable with one understandable scroll path.
+Review API usage across known consumers and future change scenarios. **Done when:** common use is concise, meaningful variations are explicit, invariants survive consumer use, and escape hatches are rare and bounded.
 
-## 10. Restore semantic primitives
+## 9. Move state to the correct owner
 
 ### Apply when
 
-Custom roles, click handlers, or visual labels reproduce behavior already supplied by native elements or established project primitives.
+State is duplicated, mirrored, synchronized manually, owned by a presentational layer, or coordinated across consumers that should share one behavioral component.
 
 ### Sequence
 
-1. Choose the native element matching the action: button, link, input, select, heading, list, or disclosure.
-2. Use an existing semantic primitive when it supplies a complete composite-widget contract.
-3. Add accessible name, state, relationships, and focus behavior at the owning layer.
-4. Preserve native keyboard activation and form behavior; set button type deliberately.
-5. Implement the entire ARIA interaction model only when native/disclosure semantics cannot express the product need.
+1. Define authoritative domain state, reusable interaction state, and local presentation state.
+2. Place each at the lowest common owner that understands its meaning.
+3. Define controlled/uncontrolled contracts deliberately.
+4. Route transitions through one path and keep visual animation subordinate to state.
+5. Preserve identity, focus, and async ordering across changes.
 
 ### Risks
 
-- Roles without keyboard behavior create a false semantic promise.
-- Swapping markup can change CSS and event propagation.
-- An application-style menu can be worse than a simple list of links/buttons when Tab navigation is expected.
+- Centralizing transient state creates broad updates and coupling.
+- Local optimism can diverge from authoritative controlled state.
+- Moving state can alter reset behavior or navigation persistence.
 
 ### Verify
 
-Test keyboard, focus order/return, names, states, form embedding, and assistive-tree output. **Done when:** semantics and behavior agree, native capability is retained, and no input mode depends on a pointer-only path.
+Exercise internal, external, rejected, interrupted, and reset transitions. **Done when:** one source of truth governs each decision, components do not mirror props ambiguously, and UI state cannot visibly contradict domain state.
 
-## 11. Establish motion hierarchy
+## 10. Make responsive structure compositional
 
 ### Apply when
 
-Equivalent interactions use inconsistent duration/easing, or decorative entrances compete with repeated application feedback.
+Components contain page-specific breakpoints, pages patch component internals at narrow widths, or responsive adaptations lose task hierarchy.
 
 ### Sequence
 
-1. Classify motion by purpose: micro feedback, reveal/replacement, overlay, spatial navigation, or one-time expression.
-2. Reuse the project's existing tiers; add a token only for a recurring missing concept.
-3. Keep repeated control feedback faster and quieter than structural or one-time motion.
-4. Make exits no slower than entries unless content comprehension requires it.
-5. Prefer transform/opacity for visual travel and allowlist CSS transition properties.
-6. Define interruption and initial-mount behavior.
+1. Separate component-internal containment from page-level rearrangement.
+2. Let components own intrinsic behavior, wrapping, and minimum constraints.
+3. Let compositions own column changes, navigation modes, and content priority.
+4. Preserve semantic order while changing presentation.
+5. Define overflow and disclosure policies for long, dense, and localized content.
 
 ### Risks
 
-- Uniform duration everywhere ignores distance and purpose.
-- Replacing physics with fixed timing can make gestures feel disconnected.
-- Broad `transition: all` silently animates future geometry changes.
+- CSS reordering can diverge from reading/focus order.
+- Too many responsive props expose layout internals.
+- Moving all breakpoints upward can make components fragile in containers.
 
 ### Verify
 
-Compare equivalent controls, rapid interruption, entrance/exit, and first versus repeat visits. **Done when:** timing communicates hierarchy, repeated actions feel consistent, and documented expressive exceptions remain bounded.
+Test representative pages at narrow width, zoom, localization extremes, and short viewports. **Done when:** components contain themselves, compositions preserve task priority, and consumers do not reach into internal anatomy for responsive repair.
 
-## 12. Honor reduced motion across renderers
+## 11. Preserve feedback, motion, and geometry
 
 ### Apply when
 
-The project uses CSS transitions, keyframes, JavaScript animation, canvas, or imperative measurement-driven motion that is not governed by one preference path.
+State changes move controls, replacement content stacks, feedback displaces unrelated content, motion hierarchy drifts, or rendered identity is lost.
 
 ### Sequence
 
-1. Inventory every renderer and shared motion entry point.
-2. Establish one preference signal or equivalent policy for all paths.
-3. Remove travel, scale, spin, parallax, and spring bounce when reduction is requested.
-4. Preserve essential state communication with immediate change or restrained opacity/color where appropriate.
-5. Make imperative snap/cancel branches honor the same rule as normal transitions.
-6. Test preference changes if the platform can update them live.
+1. Define the stable user-facing object and the geometry that should persist.
+2. Reserve changing label/icon/control slots where appropriate.
+3. Give replacement content one parent-owned slot and explicit height/interruption behavior.
+4. Localize pending/success/error feedback near its action without hiding recovery.
+5. Use semantic motion tiers and one reduced-motion policy across renderers.
+6. Keep state authoritative over animation and clean timers/observers.
 
 ### Risks
 
-- Disabling all transition duration globally can break components that rely on transition-end events.
-- Removing feedback entirely can make state changes harder to perceive.
-- Root animation configuration may not affect CSS or imperative APIs.
+- Fixed reservation can fail localization.
+- Overlapping content can remain interactive or announced.
+- Blanket zero-duration rules can break lifecycle cleanup.
 
 ### Verify
 
-Exercise every motion renderer in normal and reduced modes. **Done when:** final states remain clear and no nonessential travel, scale, spin, or bounce survives through an unmanaged path.
+Exercise long content, unequal panels, rapid reversal, errors, keyboard focus, and reduced motion. **Done when:** state remains clear, stable objects retain geometry/identity, only current content is operable, and motion supports rather than substitutes for hierarchy.
 
-## 13. Protect invariants with regression tests
+## 12. Turn design intent into governance
 
 ### Apply when
 
-The remediation depends on state coordination, focus, measurement, geometry, responsive containment, motion policy, or a shared primitive with broad blast radius.
+Quality depends on reviewer memory, documentation and code disagree, component APIs lack canonical examples, or regressions recur across pages.
 
 ### Sequence
 
-1. Express the invariant as an observable predicate, not an implementation detail.
-2. Put fast state/semantic assertions near the component.
-3. Use end-to-end coverage for focus, browser layout, input modality, responsive flow, and user journeys.
-4. Use geometry or visual assertions only for dimensions that matter to the invariant.
-5. Include adversarial fixtures: long labels, unequal content, rapid input, errors, narrow screens, and reduced motion.
-6. Add the command to the existing CI path rather than creating a parallel test island.
+1. Write short component and composition contracts around user-observable intent.
+2. Add representative stories/examples with realistic content, themes, states, and responsive contexts.
+3. Protect semantics and state with component tests.
+4. Protect hierarchy, containment, and geometry with focused rendered or visual checks.
+5. Add source checks only for rules that are deterministic and low-noise.
+6. Make exceptions explicit and reviewable.
 
 ### Risks
 
-- Pixel snapshots are brittle when the real contract is relative stability.
-- Mocking measurement too deeply can miss browser lifecycle defects.
-- Tests that only check final state miss transient double-layout and focus loss.
+- Broad snapshots create noise without protecting intent.
+- Stories can become prop galleries rather than design references.
+- Lint rules can ban legitimate exceptions and encourage workarounds.
 
 ### Verify
 
-Demonstrate that the test fails against the evidenced defect and passes after remediation. **Done when:** the test protects the user-observable invariant, runs in the project's normal suite, and covers the highest-risk transition path.
+Demonstrate that each guard fails against the evidenced regression and passes the intended exception. **Done when:** canonical examples show the quality bar, automated checks protect material invariants, and documentation, defaults, consumers, and exceptions agree.

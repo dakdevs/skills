@@ -1,102 +1,123 @@
-# Worked Example: From Symptoms to Root Causes
+# Worked Example: Design Quality Through Component Architecture
 
-This fictional example demonstrates synthesis depth. Its paths and findings are not reusable evidence.
+This fictional source-only example demonstrates how to connect visible design symptoms to architectural causes. Its paths are not reusable evidence.
 
 ## Evidence boundary
 
-Source-only review of a fictional dashboard's shared tabs and menu. No rendering occurred. The project documents `--duration-control: 140ms` and `--duration-panel: 220ms` in `src/styles/motion.css:4-5`, and says selected controls preserve their outer geometry in `docs/interface-rules.md:18-20`.
+The fictional project is a billing dashboard. The audit reviews its overview and reports pages, type/spacing tokens, `Card`, and repeated metric markup. No rendered output is observed.
 
-## Raw evidence ledger
+## Intended direction
 
-| Observation                                                                        | Evidence                                                                                | Type                                                     |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| Selected tabs change from weight 400 to 700                                        | `src/ui/tabs.css:21-25`                                                                 | Fact; resulting width movement is a source-inferred risk |
-| Entering and exiting panels are sibling normal-flow blocks during presence overlap | `src/ui/tabs.tsx:67-84`                                                                 | Fact; downstream displacement is a source-inferred risk  |
-| Tabs use 420ms while menu controls use 310ms                                       | `src/ui/tabs.tsx:75`, `src/ui/menu.css:32`                                              | Fact                                                     |
-| Both values bypass documented 140ms/220ms tokens                                   | `src/styles/motion.css:4-5`                                                             | Fact                                                     |
-| Shared tabs appear in Settings and Billing                                         | `src/features/settings/settings-tabs.tsx:9`, `src/features/billing/billing-tabs.tsx:12` | Fact; shared-component reach                             |
+The product documentation says operators should scan account health quickly, identify exceptions, then drill into detail (`docs/product-principles.md:12-18`). The design foundation defines distinct page-title, section-title, metric-value, body, and metadata roles (`src/styles/type.css:4-28`) plus section and cluster spacing (`src/styles/space.css:2-14`).
 
-Publishing these as three unrelated findings would produce local patches. The evidence supports two causes.
+## Raw evidence
 
-## Pattern map
+| Observation                                                                               | Evidence                                                      | Type                                         |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------- |
+| Overview uses body-medium for page title, section labels, and metric labels               | `src/pages/overview.tsx:18-64`                                | Fact; flattened hierarchy is source-inferred |
+| Reports uses three raw font sizes and five one-off vertical gaps                          | `src/pages/reports.tsx:14-71`                                 | Fact                                         |
+| Both pages independently build label/value/change metric blocks                           | `src/pages/overview.tsx:38-57`; `src/pages/reports.tsx:31-52` | Fact; two occurrences                        |
+| Generic `Card` accepts `compact`, `interactive`, `selected`, `elevated`, and `borderless` | `src/ui/card.tsx:6-42`                                        | Fact                                         |
+| Consumers combine flags differently and override internal padding                         | `src/pages/overview.tsx:35-60`; `src/pages/reports.tsx:28-55` | Fact                                         |
 
-| Root cause                                                                                 | Symptoms                                                                                 | Blast radius                                      | Primary ownership |
-| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------------- |
-| The shared tabs primitive has no explicit geometry contract for selection or replacement   | Selected labels may move neighbors; overlapping panels may create a temporary second row | Shared-component risk across Settings and Billing | Primitive         |
-| Motion tiers are documented but not consumable/enforced across CSS and component animation | Equivalent repeated feedback uses 310ms and 420ms literals                               | Trend: two independent declarations               | Foundation/token  |
+## Design-quality assessment
 
-The label and panel symptoms remain one finding because they share the same owner and invariant: the tabs primitive must preserve geometry while state changes. Timing drift is separate because its correction starts at the foundation and affects more than tabs.
+| Dimension                 | Assessment | Evidence                                                  | Consequence                                                                             |
+| ------------------------- | ---------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Hierarchy and composition | Weak       | `overview.tsx:18-64`; `reports.tsx:14-71`                 | Titles, sections, and supporting metadata are likely hard to distinguish while scanning |
+| Typography and content    | Mixed      | Type roles exist at `type.css:4-28` but pages bypass them | The intended operational hierarchy is not carried into primary surfaces                 |
+| Spacing and density       | Mixed      | `space.css:2-14`; page-level literals above               | Related metric groups have no shared rhythm                                             |
+| Component expression      | Weak       | Duplicate metric anatomy and overloaded `Card` API        | Pages reconstruct design decisions and can drift independently                          |
 
-## Prioritized findings
+## Architecture map
 
-| ID    | Severity | Confidence | Evidence type                              | Root cause                                                   | User/system impact                                                                         | Evidence                                                                                                                                               | Ownership        | Runtime confirmation                                              |
-| ----- | -------- | ---------- | ------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- | ----------------------------------------------------------------- |
-| IQ-01 | P1       | Medium     | Facts plus source-inferred rendered impact | Tabs lacks a state-geometry contract                         | Repeated tab changes can move adjacent controls and downstream content across two features | `src/ui/tabs.css:21-25`; `src/ui/tabs.tsx:67-84`; consumers at `src/features/settings/settings-tabs.tsx:9`, `src/features/billing/billing-tabs.tsx:12` | Primitive        | Compare bounding boxes and panel-slot flow during rapid switching |
-| IQ-02 | P2       | High       | Fact                                       | Motion tiers are documentation-only and literals bypass them | Equivalent interactions feel inconsistent and will continue to drift                       | `src/styles/motion.css:4-5`; `src/ui/tabs.tsx:75`; `src/ui/menu.css:32`                                                                                | Foundation/token | Perceived pacing needs runtime review; token mismatch does not    |
+| Layer        | Observed responsibility                            | Assessment                     |
+| ------------ | -------------------------------------------------- | ------------------------------ |
+| Foundation   | Appropriate semantic type and spacing roles        | Strong but under-consumed      |
+| Primitive    | `Card` owns surface mechanics plus unrelated modes | Boundary too broad             |
+| Component    | No semantic metric component                       | Missing shared product anatomy |
+| Composition  | Pages build metric grids independently             | Duplicate design ownership     |
+| Feature/page | Owns domain data and all visual hierarchy          | Overloaded                     |
+| Governance   | No representative metric story or hierarchy test   | Missing enforcement            |
+
+## Prioritized causal findings
+
+| ID    | Severity | Confidence | Design problem                                                 | Architecture cause                                                                          | Blast radius                         | Evidence                                                  | Owner       | Runtime confirmation                                                          |
+| ----- | -------- | ---------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------ | --------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| IQ-01 | P1       | Medium     | Primary pages do not express the documented scan hierarchy     | Pages bypass semantic type/spacing roles and no composition contract carries them           | Trend across Overview and Reports    | `type.css:4-28`; `space.css:2-14`; both page ranges above | Composition | Render both pages with realistic long/exception data and verify reading order |
+| IQ-02 | P1       | High       | Metric presentation lacks a coherent, reusable visual identity | Generic `Card` exposes unrelated flags while semantic metric anatomy is duplicated in pages | Trend plus shared-component API risk | `card.tsx:6-42`; both page metric ranges                  | Component   | Runtime only for final visual quality; architecture cause is source-proven    |
 
 ## Remediation cards
 
-### IQ-01 — Preserve one stable geometry slot through tab selection
+### IQ-01 — Make operational hierarchy a page-composition contract
 
-**Target outcome:** Selecting a tab changes state without moving tab triggers or creating a second normal-flow panel row.
+**Target design outcome:** Operators can identify page purpose, account-health summaries, exceptions, and supporting detail in that order without every block competing equally.
 
-**Root cause:** The shared tabs primitive does not own invariants for trigger metrics and replacement-panel layout.
+**Target architecture:** Overview and Reports consume a shared operational-page composition vocabulary for page header, summary section, detail section, and their semantic spacing/type roles.
 
-**Evidence and reach:** The selected rule changes font weight at `src/ui/tabs.css:21-25`. Presence renders replacement siblings at `src/ui/tabs.tsx:67-84`. Settings and Billing consume the primitive at `src/features/settings/settings-tabs.tsx:9` and `src/features/billing/billing-tabs.tsx:12`. The declarations and reach are facts; visible displacement remains a source-inferred risk until rendered.
+**Root cause:** The foundation defines useful roles, but page compositions do not own or consume a hierarchy contract, so feature files choose typography and spacing independently.
 
-**Why it matters:** Tabs are repeated navigation controls. Movement at the trigger and content boundaries can make selection feel imprecise and can shift the reading position in two known flows.
+**Evidence and reach:** The documented scan goal is a fact at `docs/product-principles.md:12-18`. Semantic roles exist at `src/styles/type.css:4-28` and `src/styles/space.css:2-14`; both pages bypass them at the cited ranges. Final visual flattening is source-inferred.
 
-**Primary ownership layer:** Primitive.
+**Why it matters:** These are primary operational surfaces. Weak hierarchy slows scanning and makes design drift a page-by-page maintenance problem.
 
-**Affected files and consumers:** Start in `src/ui/tabs.css` and `src/ui/tabs.tsx`; verify Settings and Billing. Search for other imports before migration and report them as discovered consumers.
+**Primary ownership layer:** Composition.
 
-**Apply in this order:**
-
-1. Keep trigger font metrics constant; express selection with color and a fixed-space indicator. If bold is a documented requirement, reserve the bold label width without exposing duplicate text to assistive technology.
-2. Give the panel parent one persistent slot and overlap entering/exiting panels in the same grid area.
-3. Define the slot's height policy for unequal content; do not let both replacement states contribute separate rows.
-4. Make only the active panel operable and exposed at the appropriate lifecycle point.
-5. Add geometry and keyboard regression coverage at the primitive, then exercise both known consumers.
-
-**Implementation risks:** Positioned panels can collapse parent height; hidden duplicate labels can be announced; premature accessibility hiding can suppress exit content before focus is handed off.
-
-**Verification:** In a rendered component test, record trigger and downstream-anchor bounding boxes, select every tab, switch rapidly, and repeat with unequal-height panels and long labels. Verify keyboard focus and reduced motion separately.
-
-**Done when:** Trigger outer widths remain unchanged across selection; entering and exiting panels never occupy two normal-flow rows; downstream movement matches the documented unequal-height policy; only the active panel is interactive.
-
-### IQ-02 — Make motion tiers executable across CSS and components
-
-**Target outcome:** Repeated controls and panel replacement consume the project's documented tiers without erasing the distinction between them.
-
-**Root cause:** The foundation documents durations but provides no shared consumption path or regression guard, so components duplicate literals.
-
-**Evidence and reach:** The intended tiers are defined at `src/styles/motion.css:4-5`; tabs and menu bypass them at `src/ui/tabs.tsx:75` and `src/ui/menu.css:32`. Two independent declarations qualify as a trend.
-
-**Why it matters:** One local duration edit would leave the policy unenforced and allow equivalent interactions to drift again.
-
-**Primary ownership layer:** Foundation/token.
-
-**Affected files and consumers:** Define framework-compatible CSS and component representations in the motion foundation; migrate tabs and menu first; search the frontend for remaining duration literals before claiming full adoption.
+**Affected files and consumers:** Establish composition roles near shared page layout; migrate Overview and Reports. Do not turn domain copy or data loading into composition props.
 
 **Apply in this order:**
 
-1. Choose one canonical semantic vocabulary for control feedback and panel replacement.
-2. Expose equivalent values to CSS and component animation without duplicating numeric sources where the build permits.
-3. Replace the evidenced 310ms and 420ms literals with the appropriate semantic tiers.
-4. Preserve any documented one-time expressive tier; do not force marketing entrances into the repeated-control tier.
-5. Add a source or unit check that detects unsupported repeated-interaction duration literals.
+1. Confirm the documented task and information order with representative content.
+2. Define page-header, summary, and detail composition roles using existing semantic type/spacing foundations.
+3. Keep domain data and copy in each feature while moving only recurring relationships into the composition layer.
+4. Migrate both pages and delete their parallel hierarchy literals.
+5. Add representative page fixtures with normal, long, empty, and exception-heavy data.
 
-**Implementation risks:** A mechanical replacement can map interactions to the wrong tier; globally shortening durations can break transition-end-dependent cleanup; tooling enforcement may flag legitimate data or test values.
+**Migration and design risks:** A universal dashboard template could erase meaningful differences between Reports and Overview. Existing semantic roles may need refinement if realistic content exposes weak contrast.
 
-**Verification:** Inspect all frontend duration declarations, run interaction tests for normal and interrupted entry/exit, and review control versus panel pacing in normal and reduced-motion modes.
+**Verification:** Review both pages with realistic content at common widths. Trace heading structure and source use of composition roles. Confirm that feature-specific sections can diverge without overriding shared anatomy.
 
-**Done when:** The evidenced tabs and menu declarations use named semantic tiers; unsupported interaction-duration literals are absent from the searched frontend scope or documented as exceptions; exits and interruptions still complete their state cleanup.
+**Done when:** Both pages express the documented reading order through shared semantic roles, duplicated hierarchy literals are gone, and feature-specific content remains locally owned.
 
-## Foundation-first roadmap
+### IQ-02 — Replace universal Card flags with a semantic metric component
 
-1. Establish the executable motion vocabulary (IQ-02) so the tabs fix consumes the final tier rather than introducing another temporary literal.
-2. Restore the tabs geometry contract (IQ-01) and protect it at the primitive.
-3. Verify Settings and Billing without adding consumer-specific geometry patches.
-4. Run the motion-literal search and interaction suite as regression gates.
+**Target design outcome:** Account metrics have one recognizable anatomy and state hierarchy across pages while ordinary cards remain visually neutral containers.
 
-The order is foundation-first, but the two implementation branches can proceed in parallel after tier names and ownership are agreed.
+**Target architecture:** Keep `Card` responsible for basic surface anatomy. Introduce a `MetricCard` component or composition that owns metric label, value, trend, status, and supported density/interaction modes.
+
+**Root cause:** The generic Card API absorbs feature modes while pages still reconstruct metric anatomy, so neither layer owns the actual product concept.
+
+**Evidence and reach:** `Card` exposes five interacting flags at `src/ui/card.tsx:6-42`. Overview and Reports combine them and duplicate label/value/change structure at their cited ranges. The API and duplication are facts across two independent consumers.
+
+**Why it matters:** The current design can drift at two levels: flag combinations alter generic surfaces unpredictably, and metric hierarchy changes require parallel page edits.
+
+**Primary ownership layer:** Component.
+
+**Affected files and consumers:** Simplify `src/ui/card.tsx`; add the semantic metric component near product components; migrate both pages. Preserve any non-metric Card consumers after searching them.
+
+**Apply in this order:**
+
+1. Inventory real Card consumers and classify independent versus metric-specific modes.
+2. Keep only neutral surface responsibilities in Card.
+3. Define MetricCard anatomy and semantic states from the two real consumers, using slots only for demonstrated content variation.
+4. Migrate Overview and Reports; remove internal padding overrides and invalid flag combinations.
+5. Add a story/example covering long labels, positive/negative/neutral trends, missing data, selection, and density.
+
+**Migration and design risks:** Extracting only shared markup could produce a rigid component; retaining compatibility flags could preserve the old architecture; metric color must not become the only state signal.
+
+**Verification:** Express every real metric consumer with the target API and attempt unsupported combinations. Compare anatomy across pages and inspect whether ordinary cards remain unaffected.
+
+**Done when:** Metric anatomy and supported states have one component owner, Card no longer contains metric/page modes, consumers provide domain content without internal overrides, and invalid combinations are unrepresentable.
+
+## Target architecture
+
+```text
+semantic type + spacing foundations
+              ↓
+neutral Card primitive → MetricCard component
+              ↓                 ↓
+     operational compositions → Overview / Reports
+              ↘ representative stories and page checks
+```
+
+This target improves the visible hierarchy by putting each design decision at the layer that understands and can preserve it.
