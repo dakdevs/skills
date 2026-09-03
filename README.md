@@ -91,3 +91,11 @@ npx skills add dakdevs/skills -s agentic-docs-architecture
 ```
 
 Tiered documentation pattern for repos organized for AI-agent effectiveness — `AGENTS.md`/`CLAUDE.md` per crate, `docs/{guides,architecture,features,reference}` tree, change-impact tables, compiler-enforced doc lints. Tells the agent where docs live, what AGENTS.md should contain, when to update the change-impact table, and why trait boundaries are firewalls. Triggers on adding/modifying crates, writing docs, or changing public APIs that have downstream doc impact.
+
+### principle-preserve-type-flow
+
+```
+npx skills add dakdevs/skills -s principle-preserve-type-flow
+```
+
+Inference-first TypeScript discipline: preserve types from authoritative upstream producers, derive rather than duplicate named types, reject harmful `as Type` assertions while allowing value-narrowing `as const`, use `satisfies` without widening, and parse externally supplied raw data once at entrypoint boundaries with Zod. Avoids bespoke functions whose purpose is checking TypeScript types.
