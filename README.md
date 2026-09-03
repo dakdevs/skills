@@ -99,3 +99,11 @@ npx skills add dakdevs/skills -s principle-preserve-type-flow
 ```
 
 Inference-first TypeScript discipline: preserve types from authoritative upstream producers, derive rather than duplicate named types, reject harmful `as Type` assertions while allowing value-narrowing `as const`, use `satisfies` without widening, and parse externally supplied raw data once at entrypoint boundaries with Zod. Avoids bespoke functions whose purpose is checking TypeScript types.
+
+### principle-avoid-tautological-tests
+
+```
+npx skills add dakdevs/skills -s principle-avoid-tautological-tests
+```
+
+Testing discipline built around independent oracles and defect sensitivity. Rejects tests that merely restate production logic, fixtures, mock configuration, or generated output while preserving valid uses of contract interactions, reviewed snapshots, property invariants, and independent reference implementations.

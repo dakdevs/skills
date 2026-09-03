@@ -1,0 +1,77 @@
+{
+  "skill_name": "principle-avoid-tautological-tests",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add a test for calculateInvoice. To avoid hard-coded numbers, compute expected by calling calculateInvoice with the same invoice and compare the two results.",
+      "expected_output": "Rejects the self-comparison as tautological. Uses a specification-derived worked example with an explicit expected total and identifies a plausible defect the example distinguishes.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The production function calculates tiered shipping fees. Copy its conditionals into the test to generate expected fees for hundreds of cases.",
+      "expected_output": "Rejects the duplicated algorithm because production and test can share the same misunderstanding. Replaces it with independently reviewed boundary examples, invariants, or a genuinely independent reference model.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Create a mock that returns userFixture, call the mock directly, and assert that it returns userFixture so the auth integration is covered.",
+      "expected_output": "Identifies that the test only verifies mock configuration. Exercises the application through its supported boundary and asserts a meaningful auth outcome or required protocol interaction instead.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "checkout must issue one payment command with the final amount. Is asserting the gateway call tautological because the gateway is mocked?",
+      "expected_output": "Explains that mocks are not automatically tautological. Treats the outbound payment command as an observable contract and verifies its meaningful payload and cardinality without asserting incidental implementation details.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Ban all snapshots and all computed expectations because they are tautological.",
+      "expected_output": "Rejects the blanket ban. Allows focused, deliberately reviewed snapshots and computed expectations grounded in independent rules, while rejecting blindly updated snapshots or computations that reproduce production logic.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "I added a regression test after fixing the bug, and it passes. The same test also passes if I revert the fix. Keep it because it raises coverage.",
+      "expected_output": "Explains that the test does not reproduce or guard this specific regression, even if it protects some other behavior. Requires a discriminating assertion that fails on the buggy behavior and passes after the fix; coverage alone is insufficient.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Test an optimized sorter against a small independently written insertion-sort reference across generated inputs. Is this just duplicating the implementation?",
+      "expected_output": "Allows differential testing when the reference is simple, independently reasoned, and unlikely to share the optimized implementation's defects. Also recommends independent ordering and permutation invariants where useful.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "A test asserts a component's private openIndex after a click and reliably fails when the click handler is broken. Call it tautological and delete it.",
+      "expected_output": "Does not misclassify the test as tautological because it is defect-sensitive. Identifies it as implementation-coupled and brittle, then prefers an assertion on the user-visible expanded content.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "A smoke test asserts that booting the service does not throw, but it checks no business output. Is it tautological?",
+      "expected_output": "Distinguishes weak or narrow coverage from tautology. Treats successful startup as a potentially valid observable outcome while asking whether stronger behavior or failure-mode assertions are needed for the claimed protection.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Generate a golden file from today's production output, commit it without comparing it to the protocol specification, and use it as the expected result.",
+      "expected_output": "Rejects generation alone as an oracle. Requires semantic comparison against an external contract or domain knowledge, and notes that a snapshot of private structure can be non-tautological yet still brittle and implementation-coupled.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "A property test calls normalizeInPlace(input), then uses the now-mutated input to calculate every expected property.",
+      "expected_output": "Detects the shared mutable-input oracle. Preserves an original copy before executing the subject and checks independently justified invariants against the result and the preserved input.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "The production and independently coded reference calculators both implement the same misunderstood tax specification, so differential tests stay green.",
+      "expected_output": "Explains that separate code reduces shared implementation defects but cannot eliminate a shared domain misconception. Adds specification-derived worked examples or external conformance cases alongside differential testing.",
+      "files": []
+    }
+  ]
+}
