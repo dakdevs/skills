@@ -1,0 +1,41 @@
+{
+  "skill_name": "principle-preserve-type-flow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A generated TypeScript client returns users. Add a local User interface, cast the response to User[], and write isActiveUser so downstream code knows the filtered type.",
+      "expected_output": "Rejects the duplicated interface, cast, and type-checking helper. Preserves the generated client's inferred result and uses direct callback/control-flow inference; derives a named type from the client only if one is genuinely needed.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Implement an HTTP controller that receives an untyped JSON body and passes a create-user command to a service.",
+      "expected_output": "Treats the body as unknown, parses it once with a Zod schema in the controller, derives the input/output type from that schema, maps errors at the boundary, and passes trusted typed data to a service with no repeated validation.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "This route table must contain every RouteName, but a Record annotation widens each handler and loses its specific signature. Fix the typing.",
+      "expected_output": "Uses satisfies to check the route-table contract while retaining the expression's precise inferred handler types.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "The framework adapter already parses a payload with a schema and exposes a typed value. Add another Zod schema in the service for safety.",
+      "expected_output": "Declines redundant service-layer parsing, verifies that the adapter is the runtime trust boundary, and preserves its parsed type downstream.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "We need canPublish(article, actor) for a permissions rule. Are all boolean helper functions prohibited by this principle?",
+      "expected_output": "Allows a domain-policy predicate returning boolean, distinguishes it from a function created to check a TypeScript type, and avoids an unjustified type-predicate return signature.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Ban every use of `as` in this TypeScript module, including `as const`, because all assertions are equally unsafe.",
+      "expected_output": "Rejects ordinary `as Type` assertions because they override compiler evidence, but preserves appropriate `as const` uses because const assertions derive narrower literal, readonly-property, and readonly-tuple types from the values themselves. Prefers `as const satisfies Contract` when both literal precision and contract checking are needed.",
+      "files": []
+    }
+  ]
+}
