@@ -68,6 +68,14 @@ npx skills add dakdevs/skills -s build-swiftui-liquid-glass-apps
 
 Turn a designer's concept, wireframe, screenshot, or product brief into a running native iPhone/iPad app with SwiftUI and intentional Liquid Glass. Includes product modeling, adaptive app architecture, system-first glass guidance, current Xcode/iOS availability strategy, realistic previews, accessibility, performance, build/run/test workflows, source maps, examples, and evals.
 
+### swiftui-liquid-glass-practices
+
+```
+npx skills add dakdevs/skills -s swiftui-liquid-glass-practices
+```
+
+Adapt, implement, review, migrate, and debug SwiftUI interfaces for Apple Liquid Glass. Uses an Apple-intended, system-first approach to functional layering, custom glass, native morphing, compatibility, accessibility, and measured performance.
+
 ### claude-agent-team
 
 ```
