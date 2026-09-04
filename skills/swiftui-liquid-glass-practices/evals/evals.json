@@ -1,0 +1,102 @@
+{
+  "skill_name": "swiftui-liquid-glass-practices",
+  "version": "1.0.0",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Adapt this iOS 18-era SwiftUI media screen to Liquid Glass. It has a custom blurred navigation bar, glass-like album cards, a floating mini-player, and a custom tab bar. Explain and implement the Apple-intended approach.",
+      "expected_output": "Audits layers and system structure first, removes conflicting custom chrome, keeps album content non-glass, restores semantic navigation/tabs, and justifies at most a restrained functional mini-player treatment.",
+      "assertions": [
+        "Produces a keep/remove/change map",
+        "Does not add glass to content cards",
+        "Uses standard navigation and tab structures before custom effects",
+        "Includes accessibility and performance verification"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Review this code: three buttons inside a GlassEffectContainer all use glassEffectID(\"actions\", in: namespace), and one button is inserted with animation. The author says matching IDs are required for morphing.",
+      "expected_output": "Distinguishes transition identity from union identity, explains that distinct effects need stable identities and that container geometry/spacing plus animated hierarchy change drive the morph, and proposes a corrected implementation.",
+      "assertions": [
+        "Does not repeat the matching-ID misconception",
+        "Explains glassEffectUnion separately",
+        "Checks container scope and spacing",
+        "Checks animated insertion/removal"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Make every dashboard card use clear interactive Liquid Glass so the app looks modern.",
+      "expected_output": "Challenges the request using the functional/content-layer model, preserves content hierarchy, identifies the few functional controls that may justify glass, and explains regular versus clear selection.",
+      "assertions": [
+        "Refuses indiscriminate content-layer glass",
+        "Does not apply interactive treatment to static cards",
+        "Uses clear glass only under its narrow media-background conditions",
+        "Offers a system-first alternative"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Implement a settings button whose partial-height sheet morphs from a toolbar item, while keeping a Form readable at medium and large detents.",
+      "expected_output": "Uses a navigation container, matched source/destination transition, native sheet detents, removes legacy presentation backgrounds, handles form background intentionally, and verifies accessibility and current OS behavior.",
+      "assertions": [
+        "Does not add a raw glassEffect to the sheet",
+        "Separates navigation transition from glassEffectID",
+        "Tests medium and large detents",
+        "Includes Reduce Motion and focus verification"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Add Liquid Glass to an app targeting iOS 18 and macOS 15 with one shared SwiftUI component.",
+      "expected_output": "Checks current SDK and target availability, branches at a small semantic boundary, uses native glass only on supported systems, supplies honest platform-native fallbacks, and tests both runtime paths.",
+      "assertions": [
+        "Preserves semantic controls in both branches",
+        "Does not claim Material is native Liquid Glass",
+        "Accounts for both iOS and macOS availability",
+        "Keeps business state outside appearance branching"
+      ],
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "A team wants a pixel-perfect Liquid Glass tab bar on iOS 17 and proposes runtime access to _UILiquidLensView and subview-index manipulation. Recommend the best implementation.",
+      "expected_output": "Stops ordinary implementation, identifies private/internal API and semantic risks, offers standard TabView/public alternatives, and requires explicit risk acceptance, fallback, kill switch, owner, and removal criteria for any experiment.",
+      "assertions": [
+        "Does not silently implement the private API",
+        "Discusses App Review and point-release risk",
+        "Preserves tab and action semantics",
+        "Offers a public supported alternative"
+      ],
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Diagnose a glass action cluster that merges at rest, pops during collapse, and becomes opaque for a moment only on one physical device.",
+      "expected_output": "Collects device/OS evidence, isolates one native effect, inspects modifier order, container spacing, union/transition IDs, and hierarchy changes, reproduces on device, and scopes any workaround to a verified OS defect.",
+      "assertions": [
+        "Does not diagnose solely from appearance",
+        "Checks at-rest spacing and container scope",
+        "Distinguishes union and transition identity",
+        "Requires device and point-release evidence"
+      ],
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "Review the accessibility and performance readiness of a Liquid Glass control overlay above a continuously playing video.",
+      "expected_output": "Uses the visual/accessibility matrix, tests regular versus clear over worst-case frames, semantic controls and focus, Reduce Motion/Transparency/Contrast, and profiles representative hardware for continuous sampling and interaction hitches.",
+      "assertions": [
+        "Tests combined accessibility settings",
+        "Does not assume blur guarantees contrast",
+        "Uses device measurement instead of a universal effect-count limit",
+        "Evaluates whether the glass is functionally justified"
+      ],
+      "files": []
+    }
+  ]
+}
