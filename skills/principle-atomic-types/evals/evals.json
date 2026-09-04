@@ -1,0 +1,41 @@
+{
+  "skill_name": "principle-atomic-types",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create an exported CreateInvoiceInput interface and an exported InvoiceResult type so the controller, service, and tests can share them.",
+      "expected_output": "Rejects both exported application types and the interface. Exports the runtime function or parser, keeps any necessary alias local, and relies on inference or local derivation from the value owner in consumers and tests.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "This suspendUser function receives the full User object and AppServices container, but it only reads user.id and calls services.audit.record and services.users.suspend. Refactor it.",
+      "expected_output": "Changes the boundary to accept the user ID plus two narrowly typed callable capabilities. It does not retain the whole User, repository objects, or service container, and it does not export supporting types or declare interfaces.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "A pricing function reads process.env.TAX_RATE and Date.now(), mutates the order it receives, saves it through a singleton client, and returns void. Make it follow the atomic typings approach.",
+      "expected_output": "Moves environment, current time, and persistence to an explicit effect boundary; passes the resolved tax rate, current time, and exact persistence capability; extracts deterministic pricing into a pure function; returns a new value without mutating the input; and adds no interfaces or exported types.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "To be maximally atomic, replace a validated Money value with separate amount and currency strings everywhere.",
+      "expected_output": "Rejects primitive-only decomposition because Money is one invariant-bearing semantic value. Keeps the validated value intact while ensuring functions receive no unrelated fields or capabilities.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Three application modules need the return type of loadAccount. Add account-types.ts and export Account from it.",
+      "expected_output": "Rejects the shared type file and exported alias. Keeps loadAccount as the value owner and lets each consumer use inference directly or derive a local Awaited<ReturnType<typeof loadAccount>> alias only where a name is genuinely needed.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "A generated SDK declares interfaces, and a published TypeScript package exposes named types to external consumers. Delete every interface and type export to comply.",
+      "expected_output": "Does not rewrite generated or third-party interfaces. Distinguishes the published package contract from application code and surfaces its type exports as an explicit library API decision; it applies the strict no-interface and no-exported-type rules to authored application code without silently breaking external contracts.",
+      "files": []
+    }
+  ]
+}

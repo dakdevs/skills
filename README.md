@@ -108,6 +108,14 @@ npx skills add dakdevs/skills -s principle-preserve-type-flow
 
 Inference-first TypeScript discipline: preserve types from authoritative upstream producers, derive rather than duplicate named types, reject harmful `as Type` assertions while allowing value-narrowing `as const`, use `satisfies` without widening, and parse externally supplied raw data once at entrypoint boundaries with Zod. Avoids bespoke functions whose purpose is checking TypeScript types.
 
+### principle-atomic-types
+
+```
+npx skills add dakdevs/skills -s principle-atomic-types
+```
+
+Atomic TypeScript application boundaries: export runtime behavior instead of type declarations, never declare interfaces, give functions only the smallest invariant-preserving values and capabilities required by their work, and isolate effects behind a pure functional core.
+
 ### principle-avoid-tautological-tests
 
 ```
