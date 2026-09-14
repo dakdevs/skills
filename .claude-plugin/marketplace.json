@@ -9,31 +9,32 @@
   },
   "plugins": [
     {
+      "name": "skill-audit",
+      "description": "Audit agent skills against current OpenAI and Anthropic guidance and system cards, with evidence-backed improvements and behavioral validation.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/skill-audit"]
+    },
+    {
       "name": "pr-this",
       "description": "Create or update a draft pull request for the current branch using gh CLI. Idempotent - re-assesses the full diff and builds a fresh title and body every time.",
       "source": "./",
       "strict": false,
-      "skills": [
-        "./skills/pr-this"
-      ]
+      "skills": ["./skills/pr-this"]
     },
     {
       "name": "best-practice-first",
       "description": "Research-first development — enforces official docs lookup, codebase pattern analysis, and pitfall identification before any implementation begins.",
       "source": "./",
       "strict": false,
-      "skills": [
-        "./skills/best-practice-first"
-      ]
+      "skills": ["./skills/best-practice-first"]
     },
     {
       "name": "claude-agent-team-go",
       "description": "Spin up a team of specialized Claude agents for implementation tasks. Each agent owns a layer of the stack and works from deep internals outward.",
       "source": "./",
       "strict": false,
-      "skills": [
-        "./skills/claude-agent-team-go"
-      ]
+      "skills": ["./skills/claude-agent-team-go"]
     }
   ]
 }

@@ -44,6 +44,14 @@ Create or update a draft pull request for the current branch using `gh` CLI. Ide
 
 PR titles are framed around the product issue solved or prevented; PR bodies lead with a tight, evidence-backed "Why" section aimed at engineers.
 
+### skill-audit
+
+```
+npx skills add dakdevs/skills -s skill-audit
+```
+
+Audit specified agent skills against current OpenAI and Anthropic skill-writing guidance and system cards. Refreshes relevant sources, separates direct guidance from model observations, and recommends or applies scoped improvements to activation, context use, and reliability. Includes a source bibliography and behavioral evaluation cases.
+
 ### source-to-skill-tree
 
 ```
