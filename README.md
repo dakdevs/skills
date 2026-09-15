@@ -18,6 +18,28 @@ npx skills add dakdevs/skills -s <skill-name>
 
 ## Skills
 
+### toolbox
+
+```
+npx skills add dakdevs/skills -s toolbox
+```
+
+Save useful online tools in a searchable catalog with one Markdown card per tool.
+Ask "save this tool: <url>" to capture a tool, or "do I have a tool for this?" to
+find a match. Includes [Dmgly](https://dmgly.com/) for macOS DMG design and packaging
+configuration, with notes distinguishing inspected features from tested workflows.
+
+To make the agent consult the catalog during planning, add this instruction to
+your persistent agent guidance, such as `AGENTS.md` or `CLAUDE.md`:
+
+> When planning an implementation or choosing an external tool, consult the
+> toolbox catalog for relevant saved tools. Match by the problem being solved,
+> including when I haven't named a tool.
+
+Keep your maintained catalog and cards in the installed skill directory. For
+local development, linking the installed skill to this checkout keeps subsequent
+catalog edits in the repository.
+
 ### best-practices
 
 ```
