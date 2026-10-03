@@ -18,6 +18,45 @@ npx skills add dakdevs/skills -s <skill-name>
 
 ## Skills
 
+### semantic-density
+
+```sh
+npx skills add dakdevs/skills -s semantic-density
+```
+
+Standing writing discipline for concise, meaning-dense answers, reasoning
+summaries, plans, handoffs, and delegation. Uses precise concepts while preserving
+claims, constraints, uncertainty, and requested detail.
+
+To apply it by default, add this instruction to `AGENTS.md` or `CLAUDE.md`:
+
+> Always use `$semantic-density` as the standing writing discipline across all
+> tasks. Apply silently while preserving meaning, correctness, and requested detail.
+
+Includes a [self-contained standing instruction](skills/semantic-density/assets/agent-instructions.md)
+that can instead be embedded directly in agent Markdown.
+
+### semantic-documentation
+
+```sh
+npx skills add dakdevs/skills -s semantic-documentation
+```
+
+Write and revise documentation, README prose, API references, docstrings, and code
+comments with precise, compact language. Preserves contracts, rationale, executable
+examples, and machine-significant comments. Includes a meaning-based thesaurus and
+behavioral evaluation cases.
+
+Invoke `$semantic-documentation` for a task, or add this instruction to `AGENTS.md`
+or `CLAUDE.md`:
+
+> When writing or editing documentation, README prose, API references, docstrings,
+> or code comments, use `$semantic-documentation`. Load supporting references only
+> as needed.
+
+Both writing skills work independently. The [repository integration guide](skills/semantic-documentation/references/repository-use.md)
+explains how to include either skill directly in a repository.
+
 ### toolbox
 
 ```

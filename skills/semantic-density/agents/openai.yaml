@@ -1,0 +1,4 @@
+interface:
+  display_name: "Semantic Density"
+  short_description: "A baseline for precise, dense language across tasks"
+  default_prompt: "Use $semantic-density as the default writing discipline throughout this task, preserving necessary meaning while minimizing wording."

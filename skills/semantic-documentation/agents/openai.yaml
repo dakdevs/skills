@@ -1,0 +1,4 @@
+interface:
+  display_name: "Semantic Documentation"
+  short_description: "Dense, accurate documentation and code comments"
+  default_prompt: "Use $semantic-documentation to write or revise documentation and comments with precise, compact language while preserving contracts and behavior."
