@@ -9,6 +9,20 @@
   },
   "plugins": [
     {
+      "name": "semantic-density",
+      "description": "Standing writing discipline for concise, meaning-dense agent responses, plans, handoffs, and delegation while preserving claims, constraints, and uncertainty.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/semantic-density"]
+    },
+    {
+      "name": "semantic-documentation",
+      "description": "Write precise, compact documentation, API references, docstrings, and code comments while preserving contracts, rationale, and executable behavior.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/semantic-documentation"]
+    },
+    {
       "name": "skill-audit",
       "description": "Audit agent skills against current OpenAI and Anthropic guidance and system cards, with evidence-backed improvements and behavioral validation.",
       "source": "./",
