@@ -192,3 +192,13 @@ npx skills add dakdevs/skills -s principle-avoid-tautological-tests
 ```
 
 Testing discipline built around independent oracles and defect sensitivity. Rejects tests that merely restate production logic, fixtures, mock configuration, or generated output while preserving valid uses of contract interactions, reviewed snapshots, property invariants, and independent reference implementations.
+
+### principle-required-changes-only
+
+```sh
+npx skills add dakdevs/skills -s principle-required-changes-only
+```
+
+Keep code changes limited to the requested behavior and its necessary dependencies
+and verification. Reviews each diff hunk for necessity and excludes unrelated
+refactoring, cleanup, formatting, and speculative improvements.
