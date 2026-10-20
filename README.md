@@ -209,4 +209,4 @@ refactoring, cleanup, formatting, and speculative improvements.
 npx skills add dakdevs/skills -s michelin-kitchen
 ```
 
-Execute a task through investigation, implementation, before/after evidence, six independent adversarial reviews, a draft PR, and completed Claude review of the final revision. Invoke with `$michelin-kitchen <task or issue URL>`. Discovers the target repository's commands and compatibility requirements.
+Execute a task through investigation, implementation, before/after evidence, paired Astra/Opus ownership of every installed `principle-` skill across execution and verification, adversarial agreement, a draft PR, and completed Claude review of the final revision. Bundles the current 23 principles and discovers additional installed ones. Invoke with `$michelin-kitchen <task or issue URL>`.

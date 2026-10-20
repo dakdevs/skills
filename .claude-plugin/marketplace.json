@@ -52,7 +52,7 @@
     },
     {
       "name": "michelin-kitchen",
-      "description": "Execute implementation tasks through verification, six independent reviews, a draft PR, and final-revision Claude review.",
+      "description": "Execute tasks with paired model ownership of every principle skill, adversarial agreement, verification, a draft PR, and final-revision Claude review.",
       "source": "./",
       "strict": false,
       "skills": [

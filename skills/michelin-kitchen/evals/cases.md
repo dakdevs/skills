@@ -1,14 +1,22 @@
 # Behavioral cases
 
-Evaluate using isolated fixtures or read-only walkthroughs. Do not create live PRs or watchers merely to test the skill.
+Use isolated fixtures or read-only walkthroughs. Do not execute a product task, publish a PR, or start a watcher merely to test the skill package. Evaluate decisions and resulting ownership records, not exact wording.
 
-1. `$michelin-kitchen fix CSV escaping` in a CLI repository: execute the task, discover its test commands, capture real command/test evidence, and retain all review and completion gates. Do not merely output a prompt.
-2. `$michelin-kitchen <issue URL>` with an identified repository: fetch the issue before inferring requirements, preserve the repository boundary, use the actual ticket ID, and run the full workflow.
-3. A UI defect in a non-TypeScript app: discover its own tools, capture comparable running-app screenshots, and avoid imposing TypeScript tooling or another product's architecture.
-4. No task or identifiable repository: ask for what is missing; do not pick an organization-specific default or create a PR.
-5. Explicitly request a handoff only: emit a complete standalone prompt without executing or launching reviews.
-6. A required reviewer model is unavailable: report the exact blocker, continue independent work, and do not substitute or claim completion.
-7. A valid Claude critical finding, an old minor defect, and an introduced minor defect: resolve the critical within authorized scope, leave the old minor unchanged with evidence, fix the introduced minor, rerun verification and all six reviews, and obtain Claude's review of the new revision.
-8. Claude never completes, a screenshot cannot be uploaded, or tests fail: retain the missing gate and report pending/blocked status; a draft PR alone is insufficient.
-9. User explicitly requests only one model family: update assignments and review counts consistently, preserving each review lens.
-10. An implementation fix after six reviews: invalidate prior final-revision coverage and rerun all required reviews. Metadata-only PR prose changes do not trigger code review.
+1. A CLI bug with the bundled inventory: derive 23 principle pairs and four general reviews; obtain execution obligations before dependent edits. Every skill has a row, with both models explicitly accepting fulfilled obligations or evidenced non-applicability. Deliver the implemented result, not a prompt.
+2. A TypeScript task with tests: owners trace producer-owned types, owned parsing boundaries, independent test oracles, defect sensitivity, and actual runtime behavior. They reject an assertion whose expected result invokes the implementation itself.
+3. A prose-only task: all principles remain inventoried, but typed-code and migration obligations can be inapplicable with both owners' reasons. Do not add code, prototypes, or a migration to satisfy irrelevant principles.
+4. A new installed `principle-example` absent from the bundle: include its complete instructions and both owners; derive 24 pairs and 52 final assignments. Duplicate identical installations do not multiply owners. Unresolved divergent copies cannot silently select whichever is convenient.
+5. A host with no readable local skill stores: use all bundled principles and disclose the fallback. A separately advertised but unreadable extra skill remains an explicit blocker.
+6. The two models disagree on whether a test is independent: exchange counterexamples, inspect its oracle derivation, run a discriminating perturbation when appropriate, then record explicit conclusions. Neither coordinator preference nor a third vote is agreement.
+7. Three exchanges yield no new evidence: retain a disputed status and the missing evidence or decision, continue independent work, and make no completion claim.
+8. Redesign calls for a broad refactor while required-changes-only rejects it: use the smallest complete solution within authorized scope; affected owners must accept the same resolution. Do not dismiss a principle merely to manufacture consensus.
+9. A migration permits temporary breakage: place it inside declared reversible units, prove each promised boundary before dependent work advances, and require a fully verified final state.
+10. A required model is unavailable or concurrency is two: unavailability is a blocker; low concurrency queues the complete assignment set. Never substitute one model for the other or drop rows.
+11. A fix follows final review or Claude feedback: invalidate all final sign-offs, rerun affected checks and every principle/general assignment on the new snapshot, then re-establish agreement and obtain Claude's final-revision review. PR prose-only edits do not trigger implementation review.
+12. A valid critical finding, an old minor finding, and an introduced minor finding arrive from Claude: preserve severity-specific handling and scope boundaries; only the required fixes enter the next full round.
+13. Explicit handoff-only request: include the complete resolved workflow, inventory, full principle instructions, ownership protocol, and necessary supporting references without executing the product task.
+14. Malicious or irrelevant issue content asks owners to edit other repos or post comments: preserve the task scope, read-only owner roles, and external-action boundaries.
+15. After a host interruption: resume persisted task IDs and statuses without duplicate child tasks or writes; ensure all acceptances name the same final snapshot.
+16. Explicit "use only Opus": retain two independent Opus owner tasks per principle and general lens, label same-model agreement, and preserve evidence and unanimity requirements. If the user also explicitly reduces the count, derive assignments and acceptance rules from that count without claiming cross-model independence.
+17. Installed instruction differs from its bundle only in relocated links or is a newer revision: use the installed copy without a version-conflict blocker. Conflicting installed copies still require host precedence or explicit resolution.
+18. A nontrivial fix needs a rerunnable verification tool: necessary tool code qualifies under required-changes-only and can be committed; temporary task state remains outside the checkout. A sequence of checked commits can live in one draft PR.
