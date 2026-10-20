@@ -49,6 +49,15 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/claude-agent-team-go"]
+    },
+    {
+      "name": "michelin-kitchen",
+      "description": "Execute implementation tasks through verification, six independent reviews, a draft PR, and final-revision Claude review.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/michelin-kitchen"
+      ]
     }
   ]
 }

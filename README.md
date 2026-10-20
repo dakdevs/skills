@@ -202,3 +202,11 @@ npx skills add dakdevs/skills -s principle-required-changes-only
 Keep code changes limited to the requested behavior and its necessary dependencies
 and verification. Reviews each diff hunk for necessity and excludes unrelated
 refactoring, cleanup, formatting, and speculative improvements.
+
+### michelin-kitchen
+
+```
+npx skills add dakdevs/skills -s michelin-kitchen
+```
+
+Execute a task through investigation, implementation, before/after evidence, six independent adversarial reviews, a draft PR, and completed Claude review of the final revision. Invoke with `$michelin-kitchen <task or issue URL>`. Discovers the target repository's commands and compatibility requirements.
